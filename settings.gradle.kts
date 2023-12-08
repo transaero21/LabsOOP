@@ -17,5 +17,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "MilitaryTraining"
-include(":core", ":desktop", ":android")
-
+include(
+    ":map",
+    ":core",
+    ":desktop",
+    ":android"
+)
