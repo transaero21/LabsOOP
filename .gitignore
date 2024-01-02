@@ -38,6 +38,7 @@ gradle-app.setting
 /core/build/
 /desktop/build/
 /map/build/
+/models/build/
 
 ## OS Specific
 .DS_Store
