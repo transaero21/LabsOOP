@@ -1,6 +1,5 @@
 [versions]
 kotlin = "1.9.20"
-agp = "8.1.4"
 gdx = "1.12.1"
 gdx-ktx = "1.12.1-rc1"
 
@@ -19,9 +18,6 @@ gdx-ktx-scene2d = { group = "io.github.libktx", name = "ktx-scene2d", version.re
 
 # Dependencies of the included build-logic
 kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
-android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
