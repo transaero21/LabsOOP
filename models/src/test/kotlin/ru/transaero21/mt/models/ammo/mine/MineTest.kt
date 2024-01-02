@@ -11,7 +11,7 @@ class MineTest {
     @Test
     fun mineDoesNotDefuseDuringTransitTest() {
         val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 0F)
-        mine.state = MineState.TRANSIT
+        mine.state = MineState.Transit
         assertTrue(actual = !mine.defuse(deltaTime = DELTA_TIME, isGoodStep = true))
     }
 
@@ -29,13 +29,13 @@ class MineTest {
         }
 
         assertTrue(actual = mine.distanceCurrent >= mine.distanceMax)
-        assertEquals(expected = MineState.READY, actual = mine.state)
+        assertEquals(expected = MineState.Ready, actual = mine.state)
     }
 
     @Test
     fun mineDefuseSuccessfulTest() {
         val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 0F)
-        mine.state = MineState.READY
+        mine.state = MineState.Ready
 
         val frames = getRealFrames(
             deltaTime = DELTA_TIME,
@@ -47,13 +47,14 @@ class MineTest {
             mine.defuse(deltaTime = DELTA_TIME, isGoodStep = true)
         }
 
-        assertEquals(expected = MineState.DEFUSED, actual = mine.state)
+        assertEquals(expected = MineState.Defused, actual = mine.state)
+        assertTrue(actual = mine.timePassed >= mine.defuseTime)
     }
 
     @Test
     fun mineDefuseFailedTest() {
         val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 0F)
-        mine.state = MineState.READY
+        mine.state = MineState.Ready
 
         val frames = getRealFrames(
             deltaTime = DELTA_TIME,
@@ -67,6 +68,7 @@ class MineTest {
         // Step is bad on final defuse try
         mine.defuse(deltaTime = DELTA_TIME, isGoodStep = false)
 
-        assertEquals(expected = MineState.EXPLODED, actual = mine.state)
+        assertEquals(expected = MineState.Exploded, actual = mine.state)
+        assertTrue(actual = mine.timePassed >= mine.defuseTime)
     }
 }

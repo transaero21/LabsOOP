@@ -12,14 +12,14 @@ internal class WeaponTest {
     fun desyncFixTest() {
         val weapon: Weapon = WeaponImpl()
         weapon.setFieldValue(fieldName = "capacityCurrent", value = 0)
-        weapon.setFieldValue(fieldName = "state", value = WeaponState.READY)
+        weapon.setFieldValue(fieldName = "state", value = WeaponState.Ready)
 
         weapon.update(deltaTime = DELTA_TIME)
 
         if (DELTA_TIME < weapon.reloadTime)
-            assertEquals(expected = WeaponState.RELOADING, actual = weapon.state)
+            assertEquals(expected = WeaponState.Reloading, actual = weapon.state)
         else
-            assertEquals(expected = WeaponState.READY, actual = weapon.state)
+            assertEquals(expected = WeaponState.Ready, actual = weapon.state)
     }
 
     @Test
@@ -35,7 +35,7 @@ internal class WeaponTest {
         }
 
         assertEquals(expected = weapon.capacity, actual = weapon.capacityCurrent)
-        assertEquals(expected = WeaponState.READY, actual = weapon.state)
+        assertEquals(expected = WeaponState.Ready, actual = weapon.state)
     }
 
     @Test
@@ -56,6 +56,6 @@ internal class WeaponTest {
 
         assertEquals(expected = weapon.capacity, actual = shotsFired)
         assertEquals(expected = 0, actual = weapon.capacityCurrent)
-        assertEquals(expected = WeaponState.RELOADING, actual = weapon.state)
+        assertEquals(expected = WeaponState.Reloading, actual = weapon.state)
     }
 }

@@ -7,14 +7,14 @@ abstract class Bullet(
 ) : Ammunition(x = x, y = y, angle = angle, velocity = velocity) {
     var isHitEnd: Boolean = false
         private set(value) { if (!field) field = value }
-    var state: BulletState = if (velocity != 0F) BulletState.TRANSIT else BulletState.DISPOSE
+    var state: BulletState = if (velocity != 0F) BulletState.Transit else BulletState.Dispose
 
     override fun update(deltaTime: Float) {
         super.update(deltaTime)
 
         if (distanceCurrent >= distanceMax) {
-            if (isHitEnd && state == BulletState.TRANSIT) {
-                state = BulletState.DISPOSE
+            if (isHitEnd && state == BulletState.Transit) {
+                state = BulletState.Dispose
             } else if (!isHitEnd) isHitEnd = true
         }
     }

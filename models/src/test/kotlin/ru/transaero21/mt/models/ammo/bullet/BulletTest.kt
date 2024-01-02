@@ -18,14 +18,14 @@ class BulletTest {
         bullet.update(deltaTime = DISTANCE_MAX / VELOCITY)
         assertEquals(expected = cos(angle) * DISTANCE_MAX, actual = bullet.x)
         assertEquals(expected = sin(angle) * DISTANCE_MAX, actual = bullet.y)
-        assertEquals(expected = BulletState.TRANSIT, actual = bullet.state)
+        assertEquals(expected = BulletState.Transit, actual = bullet.state)
         assertEquals(expected = true, actual = bullet.isHitEnd)
 
         // Bullet at double maximum distance
         bullet.update(deltaTime = DISTANCE_MAX / VELOCITY)
         assertEquals(expected = cos(angle) * DISTANCE_MAX, actual = bullet.x)
         assertEquals(expected = sin(angle) * DISTANCE_MAX, actual = bullet.y)
-        assertEquals(expected = BulletState.DISPOSE, actual = bullet.state)
+        assertEquals(expected = BulletState.Dispose, actual = bullet.state)
         assertEquals(expected = true, actual = bullet.isHitEnd)
     }
 }
