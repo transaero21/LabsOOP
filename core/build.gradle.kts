@@ -3,14 +3,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 
-sourceSets {
-    main {
-        java {
-            srcDir("src")
-        }
-    }
-}
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
 }

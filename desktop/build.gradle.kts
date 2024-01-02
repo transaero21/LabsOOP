@@ -1,5 +1,3 @@
-import org.gradle.internal.os.OperatingSystem
-
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -7,9 +5,6 @@ java {
 
 sourceSets {
     main {
-        java {
-            srcDir("src")
-        }
         resources {
             srcDir("../assets")
         }
@@ -31,22 +26,11 @@ dependencies {
 }
 
 val mainClassName = "ru.transaero21.mt.DesktopLauncherKt"
-val assetsDir = file("../assets")
 
 application {
     mainClass.set(mainClassName)
     applicationDefaultJvmArgs = listOf("-XstartOnFirstThread")
 }
-
-//tasks.register<Jar>("fatJar") {
-//    destinationDirectory.set(assetsDir)
-//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//    manifest {
-//        attributes["Main-Class"] = mainClassName
-//    }
-//    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-//    with(tasks.jar.get() as CopySpec)
-//}
 
 tasks.jar {
     manifest.attributes["Main-Class"] = mainClassName
