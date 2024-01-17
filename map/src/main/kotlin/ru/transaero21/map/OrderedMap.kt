@@ -53,7 +53,6 @@ class OrderedMap<K : Comparable<K>, V>: MutableMap<K, V> {
      */
     override fun remove(key: K): V? {
         val i = searchForIndex(key = key)
-        entries.forEach { println(it.key) }
         val old = if (i < 0) null else _entries[i].value
         if (i >= 0) {
             for (j in i until _size - 1) {
@@ -78,7 +77,6 @@ class OrderedMap<K : Comparable<K>, V>: MutableMap<K, V> {
      */
     override fun put(key: K, value: V): V? {
         val exp = searchForIndex(key = key, approx = true)
-        println("$_size $exp")
         return when {
             _size <= exp -> {
                 _entries.add(exp, OrderedMapEntry(pair = key to value))

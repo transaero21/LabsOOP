@@ -1,5 +1,6 @@
 [versions]
 kotlin = "1.9.20"
+kotlin-coroutines = "1.7.3"
 gdx = "1.12.1"
 gdx-ktx = "1.12.1-rc1"
 
@@ -7,6 +8,7 @@ gdx-ktx = "1.12.1-rc1"
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 gdx-core = { group = "com.badlogicgames.gdx", name = "gdx", version.ref = "gdx" }
 gdx-platform = { group = "com.badlogicgames.gdx", name = "gdx-platform", version.ref = "gdx" }
 gdx-backend-lwjgl3 = { group = "com.badlogicgames.gdx", name = "gdx-backend-lwjgl3", version.ref = "gdx" }

@@ -17,7 +17,7 @@ class Headquarter(val x: Float, val y: Float, val commander: Commander) {
     val ammunition: OrderedMap<Int, Ammunition> = OrderedMap()
 
     fun update(deltaTime: Float, orders: List<Order>, iWrapper: IteratorWrapper) {
-        for ((_, staff) in commander.staff.iterator()) {
+        commander.staff.forEach { (_, staff) ->
             for (i in staff.current - 1 downTo 0) {
                 val order = staff.orders[i]
                 when (order.status) {
@@ -31,7 +31,7 @@ class Headquarter(val x: Float, val y: Float, val commander: Commander) {
             }
         }
 
-        for (order in orders) {
+        orders.forEach { order ->
             commander.handleNewOrder(order = order)
         }
 
@@ -39,6 +39,12 @@ class Headquarter(val x: Float, val y: Float, val commander: Commander) {
             deltaTime = deltaTime,
             fWrapper = FighterWrapper(iterator = iWrapper, populateAmmo = { ammunition[it.hashCode()] = it })
         )
+    }
+
+    fun finalizePositions() {
+        FighterIterator(headquarter = this).forEachRemaining { (_, fighter) ->
+            fighter.finalizePosition()
+        }
     }
 
     fun checkAmmoHit(enemy: Headquarter) {
@@ -51,12 +57,12 @@ class Headquarter(val x: Float, val y: Float, val commander: Commander) {
                     is Bullet -> {
                         if (ammo.x >= rx && ammo.x <= rx + rw && ammo.y >= ry && ammo.y <= ry + rh) {
                             fighter.applyHit(damage = ammo.damage)
-                            ammo.state = BulletState.DISPOSE
+                            ammo.state = BulletState.Dispose
                             break
                         }
                     }
                     is Mine -> {
-                        if (ammo.state == MineState.READY && !fighter.haveSkill<DefaultDefusing>()) {
+                        if (ammo.state == MineState.Ready && !fighter.haveSkill<DefaultDefusing>()) {
                             if (Calculations.circleIntersectRect(
                                     x1 = fighter.x, y1 = fighter.y,
                                     x2 = fighter.x + rw, y2 = fighter.y + rh,
@@ -64,7 +70,7 @@ class Headquarter(val x: Float, val y: Float, val commander: Commander) {
                                 )
                             ) {
                                 fighter.applyHit(damage = ammo.damage)
-                                ammo.state = MineState.EXPLODED
+                                ammo.state = MineState.Exploded
                                 break
                             }
                         }

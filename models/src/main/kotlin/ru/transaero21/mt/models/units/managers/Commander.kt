@@ -20,9 +20,9 @@ class Commander(
         var mostFree: Staff? = null
         var approximateRemainingTimeMin: Float? = null
 
-        for ((_, staff) in staff.entries) {
+        staff.entries.forEach { (_, staff) ->
             val approximateRemainingTime = staff.approximateRemainingTime
-            if (approximateRemainingTimeMin == null || approximateRemainingTime < approximateRemainingTimeMin) {
+            if (approximateRemainingTimeMin == null || approximateRemainingTime < approximateRemainingTimeMin!!) {
                 approximateRemainingTimeMin = approximateRemainingTime
                 mostFree = staff
             }
@@ -33,11 +33,11 @@ class Commander(
     }
 
     fun update(deltaTime: Float, fWrapper: FighterWrapper) {
-        for ((_, staff) in staff.entries) {
+        staff.entries.forEach { (_, staff) ->
             staff.update(deltaTime = deltaTime)
         }
 
-        for ((_, commanders) in fieldCommanders.entries) {
+        fieldCommanders.entries.forEach { (_, commanders) ->
             commanders.update(delta = deltaTime, fWrapper = fWrapper)
         }
     }

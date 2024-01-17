@@ -14,7 +14,7 @@ internal class WeaponTest {
         weapon.setFieldValue(fieldName = "capacityCurrent", value = 0)
         weapon.setFieldValue(fieldName = "state", value = WeaponState.Ready)
 
-        weapon.update(deltaTime = DELTA_TIME)
+        weapon.update(delta = DELTA_TIME)
 
         if (DELTA_TIME < weapon.reloadTime)
             assertEquals(expected = WeaponState.Reloading, actual = weapon.state)
@@ -31,7 +31,7 @@ internal class WeaponTest {
             frames = ceil(x = weapon.reloadTime / DELTA_TIME + 1).toInt()
         )
         repeat(times = frames) { _ ->
-            weapon.update(deltaTime = DELTA_TIME)
+            weapon.update(delta = DELTA_TIME)
         }
 
         assertEquals(expected = weapon.capacity, actual = weapon.capacityCurrent)
@@ -49,7 +49,7 @@ internal class WeaponTest {
         )
         var shotsFired = 0
         repeat(times = frames) { _ ->
-            weapon.update(deltaTime = DELTA_TIME)
+            weapon.update(delta = DELTA_TIME)
             if (weapon.fire(x = 0F, y = 0F, angle = 0F) != null)
                 shotsFired++
         }

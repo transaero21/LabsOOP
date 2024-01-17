@@ -11,6 +11,7 @@ dependencies {
     implementation(project(":map"))
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.coroutines)
     testImplementation(libs.kotlin.test)
 }
 

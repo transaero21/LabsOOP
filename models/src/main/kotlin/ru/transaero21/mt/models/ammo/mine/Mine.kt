@@ -7,20 +7,20 @@ abstract class Mine(
 ) : Ammunition(x = x, y = y, angle = angle, velocity = velocity) {
     abstract val hitRange: Float
     abstract val defuseTime: Float
-    var timePassed: Float = 0F
+    private var timePassed: Float = 0F
 
     var state: MineState = MineState.Transit
 
-    fun defuse(deltaTime: Float, isGoodStep: Boolean): Boolean {
+    fun defuse(deltaTime: Float): Boolean {
         if (state != MineState.Ready) return false
         timePassed += deltaTime
         return isDefuseTimePassed().also { isOk ->
-            if (isOk) state = if (isGoodStep) MineState.Defused else MineState.Exploded
+            if (isOk) state = MineState.Defused
         }
     }
 
-    override fun update(deltaTime: Float) {
-        super.update(deltaTime)
+    override fun update(delta: Float) {
+        super.update(delta)
 
         if (distanceCurrent >= distanceMax && state == MineState.Transit)
             state = MineState.Ready

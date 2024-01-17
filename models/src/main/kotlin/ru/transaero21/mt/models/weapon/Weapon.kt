@@ -5,6 +5,7 @@ import ru.transaero21.mt.models.ammo.Ammunition
 abstract class Weapon {
     abstract val reloadTime: Float
     abstract val shotTime: Float
+
     abstract val capacity: Int
     abstract val velocity: Float
 
@@ -15,18 +16,18 @@ abstract class Weapon {
     var state: WeaponState = WeaponState.Ready
         private set
 
-    fun update(deltaTime: Float) {
+    fun update(delta: Float) {
         timeOver = 0F
         when (state) {
             WeaponState.Ready -> {
                 if (capacityCurrent <= 0) {
                     state = WeaponState.Reloading
-                    update(deltaTime = deltaTime)
+                    update(delta = delta)
                 }
             }
 
             WeaponState.Reloading -> {
-                timePassed += deltaTime
+                timePassed += delta
                 if (capacityCurrent > 0) {
                     if (timePassed >= shotTime) finalizeReloading()
                 } else {
@@ -35,6 +36,7 @@ abstract class Weapon {
             }
         }
     }
+
 
     private fun finalizeReloading() {
         if (capacityCurrent <= 0) {

@@ -5,70 +5,43 @@ import ru.transaero21.mt.models.DELTA_TIME
 import ru.transaero21.mt.models.getRealFrames
 import kotlin.math.ceil
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class MineTest {
     @Test
-    fun mineDoesNotDefuseDuringTransitTest() {
-        val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 0F)
-        mine.state = MineState.Transit
-        assertTrue(actual = !mine.defuse(deltaTime = DELTA_TIME, isGoodStep = true))
-    }
+    fun testDefuse() {
+        val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 10f)
 
-    @Test
-    fun mineIsReadyAfterMaxDistanceTest() {
-        val mineVelocity = 100F
-        val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = mineVelocity)
-
-        val frames = getRealFrames(
-            deltaTime = DELTA_TIME,
-            ceil(x = mine.distanceMax / mine.velocity / DELTA_TIME + 1).toInt()
-        )
-        repeat(times = frames) {
-            mine.update(deltaTime = DELTA_TIME)
-        }
-
-        assertTrue(actual = mine.distanceCurrent >= mine.distanceMax)
+        mine.update(delta = 10f)
+        mine.finalizePosition()
         assertEquals(expected = MineState.Ready, actual = mine.state)
-    }
-
-    @Test
-    fun mineDefuseSuccessfulTest() {
-        val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 0F)
-        mine.state = MineState.Ready
-
-        val frames = getRealFrames(
-            deltaTime = DELTA_TIME,
-            ceil(x = mine.defuseTime / DELTA_TIME + 1).toInt()
-        )
-
-        repeat(times = frames) {
-            mine.update(deltaTime = DELTA_TIME)
-            mine.defuse(deltaTime = DELTA_TIME, isGoodStep = true)
-        }
-
+        
+        assertFalse(actual = mine.defuse(deltaTime = 1f))
+        assertFalse(actual = mine.defuse(deltaTime = 1f))
+        assertTrue(actual = mine.defuse(deltaTime = 1f))
         assertEquals(expected = MineState.Defused, actual = mine.state)
-        assertTrue(actual = mine.timePassed >= mine.defuseTime)
+
+        assertFalse(actual = mine.defuse(deltaTime = 1f))
+        assertEquals(expected = MineState.Defused, actual = mine.state)
     }
 
     @Test
-    fun mineDefuseFailedTest() {
-        val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 0F)
-        mine.state = MineState.Ready
+    fun testUpdate() {
+        val mine: Mine = MineImpl(x = 0F, y = 0F, angle = 0F, velocity = 10f)
 
-        val frames = getRealFrames(
-            deltaTime = DELTA_TIME,
-            ceil(x = mine.defuseTime / DELTA_TIME + 1).toInt()
-        )
+        assertEquals(expected = MineState.Transit, actual = mine.state)
 
-        repeat(times = frames - 1) {
-            mine.update(deltaTime = DELTA_TIME)
-            mine.defuse(deltaTime = DELTA_TIME, isGoodStep = true)
-        }
-        // Step is bad on final defuse try
-        mine.defuse(deltaTime = DELTA_TIME, isGoodStep = false)
+        mine.update(delta = 0.1f)
+        mine.finalizePosition()
+        assertEquals(expected = MineState.Transit, actual = mine.state)
 
-        assertEquals(expected = MineState.Exploded, actual = mine.state)
-        assertTrue(actual = mine.timePassed >= mine.defuseTime)
+        mine.update(delta = 1f)
+        mine.finalizePosition()
+        assertEquals(expected = MineState.Ready, actual = mine.state)
+
+        mine.update(delta = 2f)
+        mine.finalizePosition()
+        assertEquals(expected = MineState.Ready, actual = mine.state)
     }
 }

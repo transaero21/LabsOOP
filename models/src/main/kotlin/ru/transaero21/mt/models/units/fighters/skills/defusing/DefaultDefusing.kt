@@ -28,7 +28,7 @@ class DefaultDefusing(private val defusingRange: Float) : Defusing() {
         }
 
         if (nearest is Mine)
-            return !nearest.defuse(deltaTime = delta, isGoodStep = true)
+            return !nearest.defuse(deltaTime = delta)
         return false
     }
 

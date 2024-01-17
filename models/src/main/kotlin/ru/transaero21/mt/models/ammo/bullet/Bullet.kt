@@ -9,8 +9,8 @@ abstract class Bullet(
         private set(value) { if (!field) field = value }
     var state: BulletState = if (velocity != 0F) BulletState.Transit else BulletState.Dispose
 
-    override fun update(deltaTime: Float) {
-        super.update(deltaTime)
+    override fun update(delta: Float) {
+        super.update(delta)
 
         if (distanceCurrent >= distanceMax) {
             if (isHitEnd && state == BulletState.Transit) {

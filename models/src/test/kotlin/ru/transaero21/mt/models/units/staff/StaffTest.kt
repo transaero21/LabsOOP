@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 
 class StaffTest {
     @Test
-    fun staffProcessOrdersTest() {
+    fun processOrdersTest() {
         val staff: Staff = StaffImpl()
 
         val orders = listOf(Move(x = 0F, y = 0F, fcId = 0), Heal(woundedId = 0, fcId = 0))
@@ -30,7 +30,7 @@ class StaffTest {
     }
 
     @Test
-    fun staffIncreasedEfficiencyTest() {
+    fun increasedEfficiencyTest() {
         val staff: Staff = StaffImpl()
 
         val requiredOrders = ceil(
