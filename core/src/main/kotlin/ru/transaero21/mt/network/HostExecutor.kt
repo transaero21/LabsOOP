@@ -12,7 +12,6 @@ import ktx.async.newSingleThreadAsyncContext
 import ru.transaero21.mt.models.core.WorldSize
 import ru.transaero21.mt.network.connector.host.HostConnectorExecutor
 import ru.transaero21.mt.utils.NetworkUtils
-import ru.transaero21.mt.utils.logError
 import java.net.SocketException
 import java.sql.Timestamp
 import java.time.Instant

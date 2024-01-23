@@ -8,7 +8,7 @@ import ru.transaero21.mt.models.ammo.mine.Mine
 import ru.transaero21.mt.models.ammo.mine.MineState
 import ru.transaero21.mt.models.core.iterators.FighterIterator
 import ru.transaero21.mt.models.core.orders.Order
-import ru.transaero21.mt.core.orders.OrderStatus
+import ru.transaero21.mt.models.core.orders.OrderStatus
 import ru.transaero21.mt.models.units.fighters.skills.Skill.Companion.haveSkill
 import ru.transaero21.mt.models.units.fighters.skills.defusing.DefaultDefusing
 import ru.transaero21.mt.models.units.managers.Commander

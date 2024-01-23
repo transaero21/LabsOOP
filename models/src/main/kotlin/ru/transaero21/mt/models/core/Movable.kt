@@ -62,6 +62,6 @@ interface Movable {
     }
 
     fun getAngle(x: Float, y: Float): Float {
-        return Calculations.getAngle(x1 = this.x, y1 = this.x, x2 = x, y2 = y)
+        return Calculations.getAngle(x1 = this.x, y1 = this.y, x2 = x, y2 = y)
     }
 }

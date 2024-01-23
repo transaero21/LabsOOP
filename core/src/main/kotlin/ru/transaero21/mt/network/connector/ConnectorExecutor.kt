@@ -9,7 +9,6 @@ import ru.transaero21.mt.network.Command
 import ru.transaero21.mt.network.CommandParser
 import ru.transaero21.mt.network.ConnectionState
 import ru.transaero21.mt.network.NetworkManager
-import ru.transaero21.mt.utils.logError
 import java.net.SocketException
 import kotlin.coroutines.CoroutineContext
 

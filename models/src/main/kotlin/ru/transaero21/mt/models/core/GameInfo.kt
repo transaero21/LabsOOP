@@ -14,6 +14,7 @@ class GameInfo(
     fun update(deltaTime: Float, orders: Pair<List<Order>, List<Order>>): Boolean {
         if (timeLeft <= 0) return false
         timeLeft -= deltaTime
+        if (timeLeft <= 0) timeLeft = 0f
 
         headquarters.first.let { hq ->
             hq.update(

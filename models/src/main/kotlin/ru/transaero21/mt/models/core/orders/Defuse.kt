@@ -6,7 +6,7 @@ import ru.transaero21.mt.models.core.instructions.Defuse
 import ru.transaero21.mt.models.core.instructions.Instruction
 import ru.transaero21.mt.models.core.instructions.Move
 
-class Defuse(private val defusableId: Int, fcId: Int) : Order(fcId = fcId) {
+class Defuse(x: Float, y: Float, private val defusableId: Int, fcId: Int) : Order(x = x, y = y, fcId = fcId) {
     override fun getInstructions(iWrapper: IteratorWrapper) : List<Instruction>  {
         var ammo: Ammunition? = null
         iWrapper.eaIterator().forEachRemaining {

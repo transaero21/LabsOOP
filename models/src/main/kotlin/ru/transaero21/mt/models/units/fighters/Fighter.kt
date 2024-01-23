@@ -7,6 +7,7 @@ import ru.transaero21.mt.models.core.instructions.InstructionStatus
 import ru.transaero21.mt.models.units.CombatUnit
 import ru.transaero21.mt.models.units.fighters.skills.Skill
 import ru.transaero21.mt.models.weapon.Weapon
+import kotlin.concurrent.Volatile
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -27,7 +28,7 @@ abstract class Fighter(
     /**
      * The current health percentage of the fighter.
      */
-    var healthPercentage: Float = 1F
+    @Volatile var healthPercentage: Float = 1F
         private set
 
     /**

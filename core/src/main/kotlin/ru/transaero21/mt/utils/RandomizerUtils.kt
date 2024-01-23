@@ -37,8 +37,8 @@ object RandomizerUtils {
         return json.fromJson(type, Gdx.files.internal(file))
     }
 
-    class NameWrapper(var values: MutableList<LName> = mutableListOf())
-    class LName(var firstName: String = "", var lastName: String = "")
-    class RankWrapper(var values: MutableList<LRank> = mutableListOf())
-    class LRank(var rank: String = "")
+    data class NameWrapper(var values: MutableList<LName> = mutableListOf())
+    data class LName(var firstName: String = "", var lastName: String = "")
+    data class RankWrapper(var values: MutableList<LRank> = mutableListOf())
+    data class LRank(var rank: String = "")
 }

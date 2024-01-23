@@ -5,7 +5,7 @@ import ru.transaero21.mt.models.core.instructions.Attack
 import ru.transaero21.mt.models.core.instructions.Instruction
 import ru.transaero21.mt.models.core.instructions.Move
 
-class Attack(val x: Float, val y: Float, fcId: Int) : Order(fcId = fcId) {
+class Attack(x: Float, y: Float, fcId: Int) : Order(x = x, y = y, fcId = fcId) {
     override fun getInstructions(iWrapper: IteratorWrapper) : List<Instruction>  {
         return listOf(Move(x = x, y = y), Attack)
     }

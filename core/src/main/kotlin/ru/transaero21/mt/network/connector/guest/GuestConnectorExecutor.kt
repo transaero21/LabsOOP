@@ -12,7 +12,6 @@ import ru.transaero21.mt.network.NetworkManager
 import ru.transaero21.mt.network.connector.ConnectorExecutor
 import ru.transaero21.mt.ui.screens.Screen
 import ru.transaero21.mt.utils.NetworkUtils
-import ru.transaero21.mt.utils.logError
 
 class GuestConnectorExecutor(ipAddress: String, port: Int): ConnectorExecutor() {
     private val context = newSingleThreadAsyncContext(threadName = THREAD_NAME)

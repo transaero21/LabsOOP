@@ -1,7 +1,7 @@
 package ru.transaero21.mt.models.units.managers
 
 import ru.transaero21.mt.models.core.orders.Order
-import ru.transaero21.mt.core.orders.OrderStatus
+import ru.transaero21.mt.models.core.orders.OrderStatus
 import ru.transaero21.mt.models.units.CombatUnit
 import ru.transaero21.mt.models.units.Uniform
 

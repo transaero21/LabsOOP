@@ -4,7 +4,6 @@ import kotlinx.coroutines.launch
 import ktx.async.KtxAsync
 import ru.transaero21.mt.models.core.WorldSize
 import ru.transaero21.mt.network.connector.guest.GuestConnectorExecutor
-import ru.transaero21.mt.utils.logError
 import java.lang.Exception
 
 object NetworkManager {

@@ -4,13 +4,17 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import ru.transaero21.mt.models.core.Team
 import ru.transaero21.mt.models.core.instructions.Move
 import ru.transaero21.mt.models.units.fighters.Fighter
-import ru.transaero21.mt.utils.logError
+import java.util.*
 import kotlin.math.PI
 
-class FighterSprite(val fighter: Fighter) : Sprite() {
-    private val fighterTexture = Texture(Gdx.files.internal("img/blue/fighter_move.png"))
+class FighterSprite(val fighter: Fighter, team: Team) : Sprite() {
+//    private val atlas = TextureAtlas(FIGHTER_ATLAS_FILE)
+//    private val fighterTexture = atlas.findRegion(team.alias.lowercase(Locale.getDefault())).texture
+    private val fighterTexture = Texture(Gdx.files.internal("img/${team.alias.lowercase(Locale.getDefault())}/fighter_move.png"))
     private var fighterFrames = split(
         fighterTexture,
         fighterTexture.width / FRAMES,
@@ -91,5 +95,6 @@ class FighterSprite(val fighter: Fighter) : Sprite() {
         private const val DIRECTIONS_COUNT = 8
         private const val FRAMES_PER_SECOND = 8
         private const val SINGLE_FRAME_TIME = 1f / FRAMES_PER_SECOND
+        private const val FIGHTER_ATLAS_FILE = "img/fighter/running.atlas"
     }
 }
