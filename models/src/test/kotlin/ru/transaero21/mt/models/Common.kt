@@ -2,7 +2,8 @@ package ru.transaero21.mt.models
 
 import kotlin.math.ceil
 import kotlin.reflect.KMutableProperty
-import kotlin.reflect.full.*
+import kotlin.reflect.full.declaredMemberFunctions
+import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
 
 internal const val DELTA_TIME = 1F / 30

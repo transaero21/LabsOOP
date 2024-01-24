@@ -3,7 +3,9 @@ package ru.transaero21.mt.ui.screens.menu.dialogs
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ktx.async.KtxAsync
-import ktx.scene2d.*
+import ktx.scene2d.StageWidget
+import ktx.scene2d.dialog
+import ktx.scene2d.progressBar
 
 private const val MIN_RETRIES = 2
 private const val MIN_VALUE = 0.2f

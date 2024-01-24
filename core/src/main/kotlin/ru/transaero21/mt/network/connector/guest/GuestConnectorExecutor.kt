@@ -3,7 +3,7 @@ package ru.transaero21.mt.network.connector.guest
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Net
 import com.badlogic.gdx.net.Socket
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
 import ktx.async.newSingleThreadAsyncContext
 import ru.transaero21.mt.MainGame
 import ru.transaero21.mt.network.Command
@@ -11,6 +11,7 @@ import ru.transaero21.mt.network.ConnectionState
 import ru.transaero21.mt.network.NetworkManager
 import ru.transaero21.mt.network.connector.ConnectorExecutor
 import ru.transaero21.mt.ui.screens.Screen
+import ru.transaero21.mt.ui.screens.game.helpers.FrameHelper
 import ru.transaero21.mt.utils.NetworkUtils
 
 class GuestConnectorExecutor(ipAddress: String, port: Int): ConnectorExecutor() {
@@ -44,9 +45,10 @@ class GuestConnectorExecutor(ipAddress: String, port: Int): ConnectorExecutor() 
                             )
                         }
                     }
-                    else -> {
-
+                    is Command.ApplyOrder -> {
+                        FrameHelper.queue.offer(command)
                     }
+                    else -> { /* Do Nothing */ }
                 }
             }
             else -> { /* Do Nothing */ }

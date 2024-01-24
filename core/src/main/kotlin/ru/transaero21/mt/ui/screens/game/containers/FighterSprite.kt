@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import ru.transaero21.mt.models.core.Team
 import ru.transaero21.mt.models.core.instructions.Move
 import ru.transaero21.mt.models.units.fighters.Fighter

@@ -2,8 +2,6 @@ package ru.transaero21.mt.ui.screens.game.helpers
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
-import ru.transaero21.mt.utils.SCREEN_HEIGHT
-import ru.transaero21.mt.utils.SCREEN_WIDTH
 
 object InputHelper {
     private const val HORIZONTAL_MARGINS = 128f

@@ -7,7 +7,7 @@ import ru.transaero21.mt.utils.clickListener
 
 class FighterWindow(
     private val skin: Skin = Scene2DSkin.defaultSkin
-) : Window("Fighter Status", skin) {
+) : Window(WINDOW_NAME, skin) {
     private val table: Table = Table(skin)
     var fighter: Fighter? = null
 
@@ -48,8 +48,12 @@ class FighterWindow(
         statusTable.add(Label("Health: $currentHealth", skin)).left().row()
         statusTable.add(Label("Speed: ${fighter.speed}", skin)).left().row()
         statusTable.add(Label("Coordinates: (${fighter.x.toInt()}, ${fighter.y.toInt()})", skin)).left().row()
-        statusTable.add(Label("Skills: ${fighter.skills.joinToString(separator = ", ")}", skin)).left().row()
+        statusTable.add(Label("Skills: ${fighter.skills.joinToString(separator = ", ") { it.skillTag }}", skin)).left().row()
 
         table.add(statusTable).expandX().fillX().row()
+    }
+
+    companion object {
+        private const val WINDOW_NAME = "Fighter Status"
     }
 }

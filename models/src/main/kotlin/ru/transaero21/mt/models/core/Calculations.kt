@@ -1,6 +1,9 @@
 package ru.transaero21.mt.models.core
 
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  * A utility object for performing various geometric calculations.

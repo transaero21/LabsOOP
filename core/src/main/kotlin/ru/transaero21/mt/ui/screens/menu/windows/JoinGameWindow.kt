@@ -2,7 +2,8 @@ package ru.transaero21.mt.ui.screens.menu.windows
 
 import ktx.scene2d.*
 import ru.transaero21.mt.ui.screens.menu.MenuWindow
-import ru.transaero21.mt.utils.*
+import ru.transaero21.mt.utils.NetworkUtils
+import ru.transaero21.mt.utils.onClick
 
 fun RootWidget.joinGameWindow(
     onBackClick: () -> Unit,

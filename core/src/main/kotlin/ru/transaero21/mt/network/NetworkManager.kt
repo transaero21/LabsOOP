@@ -4,7 +4,6 @@ import kotlinx.coroutines.launch
 import ktx.async.KtxAsync
 import ru.transaero21.mt.models.core.WorldSize
 import ru.transaero21.mt.network.connector.guest.GuestConnectorExecutor
-import java.lang.Exception
 
 object NetworkManager {
     private var hostExecutor: HostExecutor? = null
@@ -50,10 +49,13 @@ object NetworkManager {
             }
             killInProgress = false
         }
+    }
 
+    fun sendCommandHost(command: Command) {
+        connectorExecutor?.sendCommand(command = command)
     }
 
     fun sendCommandEveryone(command: Command) {
-
+        hostExecutor?.sendCommandEveryone(command = command)
     }
 }

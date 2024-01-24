@@ -2,7 +2,6 @@ package ru.transaero21.mt.network
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Net
-import com.badlogic.gdx.net.ServerSocketHints
 import com.badlogic.gdx.net.Socket
 import com.badlogic.gdx.utils.GdxRuntimeException
 import kotlinx.coroutines.cancelAndJoin
@@ -12,7 +11,6 @@ import ktx.async.newSingleThreadAsyncContext
 import ru.transaero21.mt.models.core.WorldSize
 import ru.transaero21.mt.network.connector.host.HostConnectorExecutor
 import ru.transaero21.mt.utils.NetworkUtils
-import java.net.SocketException
 import java.sql.Timestamp
 import java.time.Instant
 
@@ -42,11 +40,15 @@ class HostExecutor(port: Int, val size: WorldSize) {
             connector.sendCommand(command = Command.PingPongConnection)
             connections.add(socket to connector)
             if (connections.size == 2) {
-                val cmd = Command.StartGame(time = Timestamp.from(Instant.now()).time + 2000L, size = size)
-                connections.forEach {
-                    it.second.sendCommand(command = cmd)
-                }
+                val command = Command.StartGame(time = Timestamp.from(Instant.now()).time + 1000L, size = size)
+                sendCommandEveryone(command = command)
             }
+        }
+    }
+
+    fun sendCommandEveryone(command: Command) {
+        connections.forEach {
+            it.second.sendCommand(command = command)
         }
     }
 

@@ -1,9 +1,6 @@
 package ru.transaero21.mt.models.ammo.mine
 
 import org.junit.jupiter.api.Test
-import ru.transaero21.mt.models.DELTA_TIME
-import ru.transaero21.mt.models.getRealFrames
-import kotlin.math.ceil
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue

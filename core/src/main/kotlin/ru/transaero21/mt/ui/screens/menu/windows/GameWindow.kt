@@ -1,9 +1,9 @@
 package ru.transaero21.mt.ui.screens.menu.windows
 
-import ktx.scene2d.*
-import ru.transaero21.mt.MainGame
-import ru.transaero21.mt.network.NetworkManager
-import ru.transaero21.mt.ui.screens.Screen
+import ktx.scene2d.RootWidget
+import ktx.scene2d.textButton
+import ktx.scene2d.verticalGroup
+import ktx.scene2d.window
 import ru.transaero21.mt.ui.screens.menu.MenuWindow
 import ru.transaero21.mt.utils.onClick
 

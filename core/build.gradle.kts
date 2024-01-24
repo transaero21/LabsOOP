@@ -5,6 +5,7 @@ java {
 
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 dependencies {
@@ -12,6 +13,7 @@ dependencies {
     implementation(project(":models"))
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.serialization.json)
     api(libs.gdx.core)
     implementation(libs.gdx.ktx.actors)
     implementation(libs.gdx.ktx.async)

@@ -11,15 +11,16 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ktx.actors.stage
 import ktx.async.KtxAsync
-import ktx.scene2d.*
+import ktx.scene2d.StageWidget
+import ktx.scene2d.actors
 import ru.transaero21.mt.models.core.WorldSize
 import ru.transaero21.mt.network.NetworkManager
 import ru.transaero21.mt.ui.dialogs.errorDialog
 import ru.transaero21.mt.ui.screens.menu.dialogs.connectingDialog
 import ru.transaero21.mt.ui.screens.menu.windows.createGameWindow
+import ru.transaero21.mt.ui.screens.menu.windows.gameWindow
 import ru.transaero21.mt.ui.screens.menu.windows.joinGameWindow
 import ru.transaero21.mt.ui.screens.menu.windows.mainMenuWindow
-import ru.transaero21.mt.ui.screens.menu.windows.gameWindow
 import kotlin.math.round
 
 class MenuScreen(errorMsg: String = "") : ScreenAdapter() {

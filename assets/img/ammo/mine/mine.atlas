@@ -1,0 +1,9 @@
+mine.png
+size:32,16
+repeat:none
+defused
+bounds:12,2,8,8
+ready
+bounds:22,2,8,8
+transit
+bounds:2,2,8,8

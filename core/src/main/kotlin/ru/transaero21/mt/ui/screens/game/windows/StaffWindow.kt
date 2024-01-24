@@ -1,20 +1,23 @@
 package ru.transaero21.mt.ui.screens.game.windows
 
-import com.badlogic.gdx.scenes.scene2d.ui.*
-import ktx.scene2d.*
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.Window
+import ktx.scene2d.Scene2DSkin
 import ru.transaero21.map.OrderedMap
 import ru.transaero21.mt.models.units.managers.Staff
 
-class StaffStatusWindow(
-    private val staffArray: OrderedMap<Int, Staff>,
+class StaffWindow(
+    private val staffMap: OrderedMap<Int, Staff>,
     private val skin: Skin = Scene2DSkin.defaultSkin
-) : Window("Staff Status", skin) {
+) : Window(WINDOW_NAME, skin) {
     private val staffTable: Table = Table(skin)
 
     init {
         staffTable.defaults().pad(10f)
 
-        for ((_, staff) in staffArray) {
+        for ((_, staff) in staffMap) {
             addStaffStatus(staff)
         }
 
@@ -29,10 +32,11 @@ class StaffStatusWindow(
     fun render() {
         if (!isVisible) isVisible = true
         staffTable.clear()
-        for ((_, staff) in staffArray) {
+        for ((_, staff) in staffMap) {
             addStaffStatus(staff)
         }
         pack()
+        width = 200f
     }
 
     private fun addStaffStatus(staff: Staff) {
@@ -47,6 +51,10 @@ class StaffStatusWindow(
         statusTable.add(efficiencyLabel).left().row()
         statusTable.add(timeLeftLabel).left()
 
-        staffTable.add(statusTable).expandX().fillX().row()
+        staffTable.add(statusTable).left().row()
+    }
+
+    companion object {
+        private const val WINDOW_NAME = "Staff Status"
     }
 }

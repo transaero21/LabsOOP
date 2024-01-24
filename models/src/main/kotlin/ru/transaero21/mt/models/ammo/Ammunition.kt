@@ -1,11 +1,8 @@
 package ru.transaero21.mt.models.ammo
 
-import ru.transaero21.mt.models.core.Calculations
 import ru.transaero21.mt.models.core.Movable
 import kotlin.math.cos
-import kotlin.math.pow
 import kotlin.math.sin
-import kotlin.math.sqrt
 
 /**
  * An abstract class representing an ammunition with properties and methods for movement and updating.

@@ -10,10 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ktx.actors.stage
-import ktx.scene2d.*
+import ktx.scene2d.actors
+import ktx.scene2d.label
+import ktx.scene2d.textButton
 import ru.transaero21.mt.models.core.GameInfo
+import ru.transaero21.mt.models.core.Headquarter
 import ru.transaero21.mt.models.core.Team
 import ru.transaero21.mt.models.core.WorldSize
+import ru.transaero21.mt.models.core.orders.Move
+import ru.transaero21.mt.network.Command
 import ru.transaero21.mt.network.NetworkManager
 import ru.transaero21.mt.ui.screens.game.WorldMap.Companion.TILE_LENGTH
 import ru.transaero21.mt.ui.screens.game.WorldMap.Companion.TILE_WIDTH
@@ -23,9 +28,11 @@ import ru.transaero21.mt.ui.screens.game.helpers.InputHelper.handleDrag
 import ru.transaero21.mt.ui.screens.game.helpers.InputHelper.handleResize
 import ru.transaero21.mt.ui.screens.game.helpers.InputHelper.handleZoom
 import ru.transaero21.mt.ui.screens.game.windows.FighterWindow
-import ru.transaero21.mt.ui.screens.game.windows.StaffStatusWindow
+import ru.transaero21.mt.ui.screens.game.windows.FormationWindow
+import ru.transaero21.mt.ui.screens.game.windows.StaffWindow
 import ru.transaero21.mt.utils.SCREEN_HEIGHT
 import ru.transaero21.mt.utils.SCREEN_WIDTH
+import ru.transaero21.mt.utils.onClick
 import java.sql.Timestamp
 import java.time.Instant
 import kotlin.math.floor
@@ -52,18 +59,31 @@ class GameScreen(
     private val button: TextButton
     private val timerLabel: Label
     private val loadingLabel: Label
-    private val staffWindow = StaffStatusWindow(
-        staffArray = gameInfo.headquarters.let { if (NetworkManager.isHost) it.first.commander.staff else it.second.commander.staff }
-    ).also {
-        it.isVisible = false
-    }
+    private val staffWindow = StaffWindow(staffMap = getSelfHeadquarter().commander.staff)
     private val fighterWindow = FighterWindow()
+    private val formationWindows = FormationWindow(
+        fieldCommanders = getSelfHeadquarter().commander.fieldCommanders,
+        commanderSelectedListener = {
+            NetworkManager.sendCommandHost(
+                command = Command.SuggestOrder(
+                    order = Move(x = selected!!.first, y = selected!!.second, fcId = it),
+                    isLeft = NetworkManager.isHost
+                )
+            )
+        }
+    )
+
+    private var selected: Pair<Float, Float>? = null
 
     init {
         initInputProcessor()
 
         hud.actors {
-            button = textButton(text = "Move").apply {
+            button = textButton(text = "Move") {
+                onClick {
+                    formationWindows.isVisible = true
+                    isVisible = false
+                }
                 isVisible = false
             }
             timerLabel = label(text = getTimerText())
@@ -96,6 +116,7 @@ class GameScreen(
     override fun show() {
         hud.addActor(staffWindow)
         hud.addActor(fighterWindow)
+        hud.addActor(formationWindows)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -106,6 +127,7 @@ class GameScreen(
         loadingLabel.apply { setPosition((hud.width - this.width) / 2, (hud.height - this.height) / 2) }
         staffWindow.setPosition(0f, 0f)
         fighterWindow.apply { setPosition(hud.width - this.width, hud.height - this.height) }
+        formationWindows.apply { setPosition((hud.width - this.width) / 2, (hud.height - this.height) / 2) }
     }
 
     override fun dispose() {
@@ -119,6 +141,7 @@ class GameScreen(
         timerLabel.setText(getTimerText())
         staffWindow.render()
         fighterWindow.render()
+        formationWindows.render()
     }
 
     private fun renderWait() {
@@ -171,6 +194,7 @@ class GameScreen(
                             if (worldPos.x in 0f..mapWidth && worldPos.y in 0f..mapLength) {
                                 this@GameScreen.button.apply {
                                     setPosition(hudPos.x, hudPos.y)
+                                    selected = worldPos.x to worldPos.y
                                     isVisible = true
                                 }
                                 return true
@@ -194,5 +218,9 @@ class GameScreen(
         val minutes = floor(x = gameInfo.timeLeft / 60).toInt()
         val seconds = floor(x = gameInfo.timeLeft - minutes * 60).toInt()
         return "${if (minutes > 0) "$minutes m." else ""} $seconds s."
+    }
+
+    private fun getSelfHeadquarter(): Headquarter {
+        return gameInfo.headquarters.let { if (NetworkManager.isHost) it.first else it.second }
     }
 }

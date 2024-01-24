@@ -27,7 +27,7 @@ class GameInfo(
         headquarters.second.let { hq ->
             hq.update(
                 deltaTime = deltaTime,
-                orders = orders.first,
+                orders = orders.second,
                 iWrapper = hq.getIteratorWrapper(enemy = headquarters.first)
             )
         }

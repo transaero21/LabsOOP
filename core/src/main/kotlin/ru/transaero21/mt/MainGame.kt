@@ -9,7 +9,6 @@ import ru.transaero21.mt.models.core.WorldSize
 import ru.transaero21.mt.ui.screens.Screen
 import ru.transaero21.mt.ui.screens.game.GameScreen
 import ru.transaero21.mt.ui.screens.menu.MenuScreen
-import java.awt.Menu
 
 object MainGame : Game() {
     private var futureScreen: Screen? = null
