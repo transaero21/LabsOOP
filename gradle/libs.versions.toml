@@ -17,7 +17,6 @@ gdx-backend-lwjgl3 = { group = "com.badlogicgames.gdx", name = "gdx-backend-lwjg
 gdx-backend-android = { group = "com.badlogicgames.gdx", name = "gdx-backend-android", version.ref = "gdx" }
 gdx-ktx-actors = { group = "io.github.libktx", name = "ktx-actors", version.ref = "gdx-ktx" }
 gdx-ktx-async = { group = "io.github.libktx", name = "ktx-async", version.ref = "gdx-ktx" }
-gdx-ktx-json = { group = "io.github.libktx", name = "ktx-json", version.ref = "gdx-ktx" }
 gdx-ktx-scene2d = { group = "io.github.libktx", name = "ktx-scene2d", version.ref = "gdx-ktx" }
 
 # Dependencies of the included build-logic

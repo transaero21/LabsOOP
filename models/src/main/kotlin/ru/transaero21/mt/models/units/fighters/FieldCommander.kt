@@ -1,7 +1,6 @@
 package ru.transaero21.mt.models.units.fighters
 
 import ru.transaero21.mt.models.core.FighterWrapper
-import ru.transaero21.mt.models.core.IteratorWrapper
 import ru.transaero21.mt.models.core.orders.Order
 import ru.transaero21.mt.models.units.Rank
 import ru.transaero21.mt.models.units.Uniform
@@ -13,25 +12,16 @@ abstract class FieldCommander(var formation: Formation, initX: Float, initY: Flo
 
     override fun update(delta: Float, fWrapper: FighterWrapper) {
         super.update(delta = delta, fWrapper = fWrapper)
-
-        handleIncomingOrders(iWrapper = fWrapper.iterator)
-
+        handleIncomingOrders()
         formation.update(deltaTime = delta, fWrapper = fWrapper)
     }
 
-    private fun handleIncomingOrders(iWrapper: IteratorWrapper) {
+    private fun handleIncomingOrders() {
         incomingOrders.forEach { order ->
-            val lookUpFighter = { fighter: Fighter ->
-                order.getInstructions(iWrapper = iWrapper).let { instructions ->
-                    if (instructions.firstOrNull { it.checkCompatability(self = fighter) } != null) {
-                        fighter.conveyInstructions(instructions = instructions)
-                    }
-                }
+            order.getInstructions(fc = this).forEach { (k, v) ->
+                val fighter = if (k != -1) formation.fighters[k] else this
+                fighter?.conveyInstructions(v)
             }
-
-            for ((_, fighter) in formation.fighters)
-                lookUpFighter(fighter)
-            lookUpFighter(this)
         }
         incomingOrders.clear()
     }

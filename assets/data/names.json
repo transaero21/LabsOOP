@@ -1,4 +1,4 @@
-{"values": [{"firstName":"Javier","lastName":"Crowley"},
+[{"firstName":"Javier","lastName":"Crowley"},
 {"firstName":"Greg","lastName":"Larkcum"},
 {"firstName":"Truman","lastName":"Pollastrino"},
 {"firstName":"Tabbie","lastName":"Cunio"},
@@ -97,4 +97,4 @@
 {"firstName":"Holly","lastName":"Rogister"},
 {"firstName":"Edita","lastName":"Hardington"},
 {"firstName":"Filmer","lastName":"MacNamara"},
-{"firstName":"Redford","lastName":"Eitter"}]}
+{"firstName":"Redford","lastName":"Eitter"}]

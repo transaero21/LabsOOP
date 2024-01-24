@@ -35,9 +35,10 @@ class Headquarter(val x: Float, val y: Float, val commander: Commander) {
             commander.handleNewOrder(order = order)
         }
 
+        var ammoId = ammunition.keys.lastOrNull() ?: 0
         commander.update(
             deltaTime = deltaTime,
-            fWrapper = FighterWrapper(iterator = iWrapper, populateAmmo = { ammunition[it.hashCode()] = it })
+            fWrapper = FighterWrapper(iterator = iWrapper, populateAmmo = { ammunition[++ammoId] = it })
         )
     }
 

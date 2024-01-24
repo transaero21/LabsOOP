@@ -4,6 +4,7 @@ import ru.transaero21.mt.models.core.orders.Order
 import ru.transaero21.mt.models.core.orders.OrderStatus
 import ru.transaero21.mt.models.units.CombatUnit
 import ru.transaero21.mt.models.units.Uniform
+import kotlin.math.max
 
 abstract class Staff(
     override val fullName: String,
@@ -29,7 +30,7 @@ abstract class Staff(
         get() = defaultProcessingTime - maxEfficiencyBonus * efficiency
 
     private var timePassed: Float = 0F
-    val approximateRemainingTime get() = (orders.size - current) * processingTime - timePassed
+    val approximateRemainingTime get() = max(a = (orders.size - current) * processingTime - timePassed, b = 0f)
 
     fun update(deltaTime: Float) {
         if (current >= orders.size) return

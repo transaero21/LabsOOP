@@ -1,10 +1,8 @@
 package ru.transaero21.mt.network.connector
 
 import com.badlogic.gdx.net.Socket
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.internal.synchronized
 import kotlinx.coroutines.launch
 import ktx.async.KtxAsync
 import ru.transaero21.mt.network.Command
@@ -37,7 +35,6 @@ abstract class ConnectorExecutor {
         }
     }
 
-    @OptIn(InternalCoroutinesApi::class)
     fun sendCommand(command: Command) {
         synchronized(socket) {
             with(socket.outputStream) {
@@ -45,7 +42,6 @@ abstract class ConnectorExecutor {
                 flush()
             }
         }
-        println(command.toString())
     }
 
     suspend fun kill() {

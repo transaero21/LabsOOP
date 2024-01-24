@@ -17,7 +17,7 @@ import ru.transaero21.mt.models.core.GameInfo
 import ru.transaero21.mt.models.core.Headquarter
 import ru.transaero21.mt.models.core.Team
 import ru.transaero21.mt.models.core.WorldSize
-import ru.transaero21.mt.models.core.orders.Move
+import ru.transaero21.mt.models.core.orders.Attack
 import ru.transaero21.mt.network.Command
 import ru.transaero21.mt.network.NetworkManager
 import ru.transaero21.mt.ui.screens.game.WorldMap.Companion.TILE_LENGTH
@@ -46,7 +46,7 @@ class GameScreen(
     private val batch = SpriteBatch()
 
     private val gameInfo: GameInfo = GameHelper.getNewGame(mapWidth = mapWidth, mapLength = mapLength, timestamp = startGameAt)
-    private val team: Team = if (NetworkManager.isHost) Team.Right else Team.Left
+    private val team: Team = if (NetworkManager.isHost) Team.Left else Team.Right
     private val worldMap = WorldMap(gameInfo = gameInfo, worldSize = worldSize, selfTeam = team)
 
     private val worldMapCamera = OrthographicCamera(SCREEN_WIDTH.toFloat(), SCREEN_HEIGHT.toFloat())
@@ -66,7 +66,7 @@ class GameScreen(
         commanderSelectedListener = {
             NetworkManager.sendCommandHost(
                 command = Command.SuggestOrder(
-                    order = Move(x = selected!!.first, y = selected!!.second, fcId = it),
+                    order = Attack(x = selected!!.first, y = selected!!.second, fcId = it),
                     isLeft = NetworkManager.isHost
                 )
             )
@@ -147,6 +147,7 @@ class GameScreen(
     private fun renderWait() {
         val diff = (startGameAt - Timestamp.from(Instant.now()).time) / 1000F
         if (diff <= 0) {
+            FrameHelper.resetGame()
             if (NetworkManager.isHost) {
                 worldMapCamera.position.set(0f, 0f, 0f)
             } else {

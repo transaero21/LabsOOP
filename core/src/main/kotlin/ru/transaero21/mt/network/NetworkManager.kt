@@ -43,10 +43,8 @@ object NetworkManager {
         killInProgress = true
         KtxAsync.launch {
             connectorExecutor?.kill()?.also { connectorExecutor = null }
-            hostExecutor?.kill()?.also {
-                hostExecutor = null
-                isHost = false
-            }
+            hostExecutor?.kill()?.also { hostExecutor = null }
+            isHost = false
             killInProgress = false
         }
     }

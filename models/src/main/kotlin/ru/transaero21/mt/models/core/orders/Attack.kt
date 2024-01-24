@@ -1,12 +1,22 @@
 package ru.transaero21.mt.models.core.orders
 
-import ru.transaero21.mt.models.core.IteratorWrapper
+import kotlinx.serialization.Serializable
+import ru.transaero21.map.OrderedMap
 import ru.transaero21.mt.models.core.instructions.Attack
 import ru.transaero21.mt.models.core.instructions.Instruction
 import ru.transaero21.mt.models.core.instructions.Move
+import ru.transaero21.mt.models.units.fighters.FieldCommander
 
-class Attack(x: Float, y: Float, fcId: Int) : Order(x = x, y = y, fcId = fcId) {
-    override fun getInstructions(iWrapper: IteratorWrapper) : List<Instruction>  {
-        return listOf(Move(x = x, y = y), Attack)
+@Serializable
+class Attack : Order {
+    constructor(x: Float, y: Float, fcId: Int) : super(x, y, fcId)
+
+    override fun getInstructions(fc: FieldCommander): OrderedMap<Int, List<Instruction>> {
+        return OrderedMap<Int, List<Instruction>>().also { map ->
+            fc.formation.getExpectedPositions(x = x, y = y).forEach { (k, v) ->
+                map[k] = listOf(Move(x = v.first, y = v.second), Attack)
+            }
+            map[-1] = listOf(Move(x = x, y = y), Attack)
+        }
     }
 }

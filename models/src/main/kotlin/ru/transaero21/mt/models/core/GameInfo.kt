@@ -35,11 +35,11 @@ class GameInfo(
         headquarters.first.finalizePositions()
         headquarters.second.finalizePositions()
 
-//        headquarters.first.checkAmmoHit(enemy = headquarters.second)
-//        headquarters.second.checkAmmoHit(enemy = headquarters.first)
-//
-//        headquarters.first.cleanUpFighters()
-//        headquarters.second.cleanUpFighters()
+        headquarters.first.checkAmmoHit(enemy = headquarters.second)
+        headquarters.second.checkAmmoHit(enemy = headquarters.first)
+
+        headquarters.first.cleanUpFighters()
+        headquarters.second.cleanUpFighters()
 
         return true
     }

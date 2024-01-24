@@ -1,4 +1,4 @@
-{"values": [{"rank":"General"},
+[{"rank":"General"},
 {"rank":"Colonel"},
 {"rank":"Major"},
 {"rank":"Captain"},
@@ -17,4 +17,4 @@
 {"rank":"Sergeant Major of the Army"},
 {"rank":"Second Lieutenant"},
 {"rank":"First Lieutenant"},
-{"rank":"Major General"}]}
+{"rank":"Major General"}]

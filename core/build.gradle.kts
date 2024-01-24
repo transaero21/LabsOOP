@@ -17,6 +17,5 @@ dependencies {
     api(libs.gdx.core)
     implementation(libs.gdx.ktx.actors)
     implementation(libs.gdx.ktx.async)
-    implementation(libs.gdx.ktx.json)
     implementation(libs.gdx.ktx.scene2d)
 }

@@ -2,15 +2,13 @@ package ru.transaero21.mt.ui.screens.game.helpers
 
 import ru.transaero21.mt.models.core.GameInfo
 import ru.transaero21.mt.models.core.Headquarter
+import ru.transaero21.mt.models.core.orders.Move
 import ru.transaero21.mt.models.units.fighters.*
 import ru.transaero21.mt.models.units.fighters.FieldCommander.Companion.makeCommander
 import ru.transaero21.mt.models.units.managers.Commander
 import ru.transaero21.mt.models.units.managers.CommonStaff
 import ru.transaero21.mt.ui.screens.game.WorldMap
 import ru.transaero21.mt.utils.RandomizerUtils
-import kotlin.math.PI
-import kotlin.math.cos
-import kotlin.math.sin
 
 object GameHelper {
     private const val STAFF_COUNT = 2
@@ -80,18 +78,14 @@ object GameHelper {
     }
 
     private fun createFormation(initializer: Initializer, nextId: () -> Int): FieldCommander {
-        val formation = Formation()
-        val step = 2 * PI.toFloat() / initializer.count
-        var angle = -PI.toFloat() / 4
+        val formation = Formation(DEFAULT_RADIUS)
         repeat(initializer.count) {
-            formation.fighters[nextId()] = initializer.createFighter(
-                initializer.x + cos(x = angle) * DEFAULT_RADIUS,
-                initializer.y + sin(x = angle) * DEFAULT_RADIUS
-            )
-            angle += step
+            formation.fighters[nextId()] = initializer.createFighter(initializer.x, initializer.y)
         }
 
-        return initializer.createFighter(initializer.x, initializer.y).makeCommander(formation = formation)
+        return initializer.createFighter(initializer.x, initializer.y).makeCommander(formation = formation).also {
+            it.conveyOrder(Move(x = initializer.x, y = initializer.y, fcId = -1))
+        }
     }
 
     private fun Initializer.project(isLeft: Boolean): Initializer = Initializer(

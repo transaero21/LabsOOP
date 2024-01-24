@@ -15,7 +15,7 @@ class Infantry(
     override val healthMax: Float = 100F
     override val skills: Set<Skill> = setOf(DefaultAttacking(attackingRange = 256f))
     override val weapon: Weapon = AssaultRifle()
-    override val speed: Float = 16F
+    override val speed: Float = 100F
     override val uniform: Uniform = Uniform(width = 16F, length = 16F)
     override val rank: Rank = RandomizerUtils.getNextRank()
 }

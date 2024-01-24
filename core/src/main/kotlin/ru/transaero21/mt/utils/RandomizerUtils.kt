@@ -1,7 +1,8 @@
 package ru.transaero21.mt.utils
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.utils.Json
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import ru.transaero21.mt.models.units.Rank
 import kotlin.math.abs
 import kotlin.random.Random
@@ -10,9 +11,8 @@ object RandomizerUtils {
     private const val NAMES_FILE = "data/names.json"
     private const val RANKS_FILE = "data/ranks.json"
 
-    private val json = Json()
-    private val namesList: List<LName> = readFromFile(type = NameWrapper::class.java, file = NAMES_FILE).values
-    private val ranksList: List<LRank> = readFromFile(type = RankWrapper::class.java, file = RANKS_FILE).values
+    private val namesList: List<LName> = readFromFile(file = NAMES_FILE)
+    private val ranksList: List<LRank> = readFromFile(file = RANKS_FILE)
     private var random: Random? = null
 
     fun setupNewGame(timestamp: Long) {
@@ -33,12 +33,10 @@ object RandomizerUtils {
 
     private fun nextInt() = abs(random!!.nextInt())
 
-    private fun <T> readFromFile(type: Class<T> , file: String): T {
-        return json.fromJson(type, Gdx.files.internal(file))
+    private inline fun <reified T> readFromFile(file: String): T {
+        return Json.decodeFromString(Gdx.files.internal(file).readString())
     }
 
-    data class NameWrapper(var values: MutableList<LName> = mutableListOf())
-    data class LName(var firstName: String = "", var lastName: String = "")
-    data class RankWrapper(var values: MutableList<LRank> = mutableListOf())
-    data class LRank(var rank: String = "")
+    @Serializable data class LName(val firstName: String, val lastName: String)
+    @Serializable data class LRank(val rank: String)
 }

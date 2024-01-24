@@ -1,9 +1,11 @@
 package ru.transaero21.mt.ui.screens.game.containers
 
-import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import ru.transaero21.mt.models.core.Team
 import ru.transaero21.mt.models.core.instructions.Move
 import ru.transaero21.mt.models.units.fighters.Fighter
@@ -11,9 +13,8 @@ import java.util.*
 import kotlin.math.PI
 
 class FighterSprite(val fighter: Fighter, team: Team) : Sprite() {
-//    private val atlas = TextureAtlas(FIGHTER_ATLAS_FILE)
-//    private val fighterTexture = atlas.findRegion(team.alias.lowercase(Locale.getDefault())).texture
-    private val fighterTexture = Texture(Gdx.files.internal("img/${team.alias.lowercase(Locale.getDefault())}/fighter_move.png"))
+    private val atlas = TextureAtlas(FIGHTER_ATLAS_FILE)
+    private val fighterTexture = atlas.findRegion(team.alias.lowercase(Locale.getDefault())).toTexture()
     private var fighterFrames = split(
         fighterTexture,
         fighterTexture.width / FRAMES,
@@ -34,18 +35,11 @@ class FighterSprite(val fighter: Fighter, team: Team) : Sprite() {
     fun update(delta: Float, batch: SpriteBatch) {
         val direction = getDirection()
 
-        if (!fighter.hasUnfulfilledInstructions()) {
+        if (!fighter.hasUnfulfilledInstructions() || fighter.getCurrentInstructions() !is Move) {
             setRegion(fighterFrames[direction][0])
             resetAnimation()
         } else {
-            val current = fighter.getCurrentInstructions()
-            when (current) {
-                is Move -> {
-                    setRegion(fighterFrames[direction][getCurrentFrame(delta = delta)])
-                }
-
-                else -> TODO()
-            }
+            setRegion(fighterFrames[direction][getCurrentFrame(delta = delta)])
         }
 
         setPosition(fighter.x - fighter.uniform.width / 2, fighter.y)
@@ -89,11 +83,27 @@ class FighterSprite(val fighter: Fighter, team: Team) : Sprite() {
         return currentFrame
     }
 
+    private fun TextureRegion.toTexture(): Texture {
+        val pixmap = Pixmap(regionWidth, regionHeight, Pixmap.Format.RGBA8888)
+
+        if (texture.textureData.isPrepared.not()) texture.textureData.prepare()
+        val texturePixmap = texture.textureData.consumePixmap()
+
+        pixmap.drawPixmap(texturePixmap, 0, 0, regionX, regionY, regionWidth, regionHeight)
+
+        val newTexture = Texture(pixmap)
+
+        texturePixmap.dispose()
+        pixmap.dispose()
+
+        return newTexture
+    }
+
     companion object {
         private const val FRAMES = 4
         private const val DIRECTIONS_COUNT = 8
         private const val FRAMES_PER_SECOND = 8
         private const val SINGLE_FRAME_TIME = 1f / FRAMES_PER_SECOND
-        private const val FIGHTER_ATLAS_FILE = "img/fighter/running.atlas"
+        private const val FIGHTER_ATLAS_FILE = "img/fighter/fighter.atlas"
     }
 }
