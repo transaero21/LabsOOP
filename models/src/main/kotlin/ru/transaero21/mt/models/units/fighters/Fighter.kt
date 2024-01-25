@@ -13,6 +13,9 @@ import kotlin.math.sin
 
 /**
  * Abstract class representing a fighter in a combat scenario.
+ *
+ * @param x initial x-coordinate of the fighter.
+ * @param y initial y-coordinate of the fighter.
  */
 abstract class Fighter(
     override var x: Float, override var y: Float
@@ -62,7 +65,20 @@ abstract class Fighter(
      */
     private var current: Int = 0
 
+    /**
+     * Size of instruction left to be executed.
+     */
+    val instrSize: Int get() = instructions.size - current
+
+    /**
+     * Updates the fighter based on the time elapsed and execute instructions.
+     *
+     * @param delta time elapsed since the last update, in seconds.
+     * @param fWrapper wrapper containing context-specific information for the fighter.
+     */
     open fun update(delta: Float, fWrapper: FighterWrapper) {
+        weapon.update(delta = delta)
+
         if (!hasUnfulfilledInstructions()) return
 
         instructions[current].let { instruction ->
@@ -100,7 +116,7 @@ abstract class Fighter(
      * @param damage the amount of damage to apply to the fighter.
      * @return true if the fighter is still alive after applying the hit, false otherwise.
      */
-    fun applyHit(damage: Float): Boolean {
+    @Synchronized fun applyHit(damage: Float): Boolean {
         if (damage > 0)
             healthPercentage = (healthMax * healthPercentage - damage) / healthMax
         return healthPercentage > 0
@@ -113,7 +129,7 @@ abstract class Fighter(
      * @param healing the amount of healing to apply to the fighter.
      * @return true if the fighter is still alive after applying the healing, false otherwise.
      */
-    fun applyHealing(healing: Float): Boolean {
+    @Synchronized fun applyHealing(healing: Float): Boolean {
         if (healing > 0)
             healthPercentage = (healthMax * healthPercentage + healing) / healthMax
         return healthPercentage > 0
@@ -128,11 +144,25 @@ abstract class Fighter(
         this.instructions.addAll(instructions)
     }
 
-    fun hasUnfulfilledInstructions(): Boolean {
+    /**
+     * Checks if the fighter has unfulfilled instructions.
+     *
+     * @return true if there are unfulfilled instructions, false otherwise.
+     */
+    private fun hasUnfulfilledInstructions(): Boolean {
         return current < instructions.size
     }
 
+    /**
+     * Gets the current instruction being executed by the fighter.
+     *
+     * @return current instruction, or null if there are no more instructions to execute.
+     */
     fun getCurrentInstructions(): Instruction? {
         return if (hasUnfulfilledInstructions()) instructions[current] else null
+    }
+
+    fun abortInstructions() {
+        current = instructions.size
     }
 }

@@ -35,12 +35,10 @@ abstract class ConnectorExecutor {
         }
     }
 
-    fun sendCommand(command: Command) {
-        synchronized(socket) {
-            with(socket.outputStream) {
-                write(command.toString().toByteArray())
-                flush()
-            }
+    @Synchronized fun sendCommand(command: Command) {
+        with(socket.outputStream) {
+            write(command.toString().toByteArray())
+            flush()
         }
     }
 

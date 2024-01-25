@@ -6,7 +6,4 @@ package ru.transaero21.mt.models.units
  * @property title the title of the rank, e.g., "Private", "Sergeant", etc.
  * @property weight the weight associated with the rank.
  */
-data class Rank(
-    val title: String,
-    val weight: Float
-)
+class Rank(val title: String, val weight: Float)

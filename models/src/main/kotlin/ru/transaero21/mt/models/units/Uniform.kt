@@ -6,4 +6,4 @@ package ru.transaero21.mt.models.units
  * @property length the length of the uniform.
  * @property width the width of the uniform.
  */
-data class Uniform(val length: Float, val width: Float)
+class Uniform(val length: Float, val width: Float)

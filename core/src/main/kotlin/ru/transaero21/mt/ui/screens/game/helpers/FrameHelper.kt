@@ -1,8 +1,11 @@
 package ru.transaero21.mt.ui.screens.game.helpers
 
+import ru.transaero21.mt.MainGame
 import ru.transaero21.mt.models.core.GameInfo
 import ru.transaero21.mt.models.core.orders.Order
 import ru.transaero21.mt.network.Command
+import ru.transaero21.mt.network.NetworkManager
+import ru.transaero21.mt.ui.screens.Screen
 import java.util.concurrent.ConcurrentLinkedQueue
 
 object FrameHelper {
@@ -19,7 +22,14 @@ object FrameHelper {
         if (timePassed >= FIXED_DELTA) {
             timePassed -= FIXED_DELTA
             frameCount++
-            gameInfo.update(deltaTime = delta, orders = getOrdersPair())
+            if (!gameInfo.update(deltaTime = delta, orders = getOrdersPair())) {
+                val result = gameInfo.getWinner()
+                val msg = if (result == null) "Time is over" else (if (NetworkManager.isHost == result) "You won" else "You lost")
+                NetworkManager.killAll()
+                MainGame.setScreen(screen = Screen.MainMenu, mapOf("errorMsg" to msg))
+            } else if (!NetworkManager.gameRunning) {
+                MainGame.setScreen(screen = Screen.MainMenu, mapOf("errorMsg" to "Something bad happened"))
+            }
         }
     }
 

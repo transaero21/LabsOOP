@@ -17,16 +17,13 @@ object GameHelper {
     private var mapWidth: Float = 0f
     private var mapLength: Float = 0f
 
-    private data class Initializer(
-        val x: Float,
-        val y: Float,
-        val count: Int,
-        val createFighter: (Float, Float) -> Fighter
-    )
+    private data class Initializer(val x: Float, val y: Float, val count: Int, val createFighter: (Float, Float) -> Fighter)
     private val initializerList = listOf(
-        Initializer(x = 16f, y = 16f, count = 3, createFighter = { x, y -> Doctor(initX = x, initY = y) }),
-        Initializer(x = 80f, y = 32f, count = 3, createFighter = { x, y -> Grenadier(initX = x, initY = y) }),
-        Initializer(x = 32f, y = 80f, count = 3, createFighter = { x, y -> Infantry(initX = x, initY = y) })
+        Initializer(x = 24f, y = 24f, count = 3, createFighter = { x, y -> Doctor(initX = x, initY = y) }),
+        Initializer(x = 82f, y = 48f, count = 3, createFighter = { x, y -> Grenadier(initX = x, initY = y) }),
+        Initializer(x = 48f, y = 82f, count = 3, createFighter = { x, y -> Infantry(initX = x, initY = y) }),
+        Initializer(x = 148f, y = 48f, count = 3, createFighter = { x, y -> Infantry(initX = x, initY = y) }),
+        Initializer(x = 48f, y = 148f, count = 3, createFighter = { x, y -> Infantry(initX = x, initY = y) })
     )
 
     fun getNewGame(mapWidth: Float, mapLength: Float, timestamp: Long): GameInfo {

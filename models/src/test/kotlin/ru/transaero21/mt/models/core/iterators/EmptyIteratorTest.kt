@@ -1,8 +1,8 @@
 package ru.transaero21.mt.models.core.iterators
 
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import ru.transaero21.mt.models.core.iterators.EmptyIterator.Companion.getSafeIterator
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

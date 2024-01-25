@@ -5,6 +5,7 @@ import ru.transaero21.mt.models.units.fighters.Fighter
 
 abstract class Skill: Comparable<Skill> {
     abstract val skillTag: String
+    abstract val range: Float
     abstract val timeout: Float
 
     private var timePassed: Float = 0F

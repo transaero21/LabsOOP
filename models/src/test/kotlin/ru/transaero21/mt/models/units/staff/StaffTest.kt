@@ -15,7 +15,7 @@ class StaffTest {
     fun processOrdersTest() {
         val staff: Staff = StaffImpl()
 
-        val orders = listOf(Move(x = 0F, y = 0F, fcId = 0), Heal(woundedId = 0, fcId = 0))
+        val orders = listOf(Move(x = 0F, y = 0F, fcId = 0), Heal(x = 0f, y = 0f, fcId = 0))
         orders.forEach { order -> staff.addOrderForSignature(order = order) }
 
         val frames = getRealFrames(
@@ -23,7 +23,7 @@ class StaffTest {
             frames = ceil(x = staff.processingTime / DELTA_TIME).toInt()
         )
         repeat(times = frames) {
-            staff.update(deltaTime = DELTA_TIME)
+            staff.update(delta = DELTA_TIME)
         }
 
         assertEquals(expected = 1, actual = staff.current)
@@ -46,7 +46,7 @@ class StaffTest {
             frames = ceil(x = staff.approximateRemainingTime / DELTA_TIME).toInt()
         )
         repeat(times = frames) {
-            staff.update(deltaTime = DELTA_TIME)
+            staff.update(delta = DELTA_TIME)
         }
 
         assertEquals(expected = orders.size, actual = staff.current)

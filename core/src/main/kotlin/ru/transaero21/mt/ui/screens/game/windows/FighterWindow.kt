@@ -17,7 +17,7 @@ class FighterWindow(
 
         val closeButton = TextButton("Close", skin)
         closeButton.addListener(clickListener(onClick = { fighter = null }))
-        add(closeButton).padBottom(10f).colspan(2).row()
+        add(closeButton).padTop(10f).colspan(2).row()
 
         isMovable = false
         isVisible = false
@@ -37,19 +37,24 @@ class FighterWindow(
         if (fighter == null) isVisible = false
 
         pack()
-        setSize(272f, 192f)
+        setSize(272f, 258f)
     }
 
     private fun addFighterStatus(fighter: Fighter) {
-        val currentHealth = fighter.healthMax * fighter.healthPercentage
-
-        val statusTable = Table(skin)
-        statusTable.add(Label("Full Name: ${fighter.fullName}", skin)).colspan(2).left().row()
-        statusTable.add(Label("Health: $currentHealth", skin)).left().row()
-        statusTable.add(Label("Speed: ${fighter.speed}", skin)).left().row()
-        statusTable.add(Label("Coordinates: (${fighter.x.toInt()}, ${fighter.y.toInt()})", skin)).left().row()
-        statusTable.add(Label("Skills: ${fighter.skills.joinToString(separator = ", ") { it.skillTag }}", skin)).left().row()
-
+        val statusTable = Table(skin).apply {
+            add(Label("Full Name: ${fighter.fullName}", skin)).left().row()
+            add(Label("Type: ${fighter::class.simpleName ?: "FieldCommander"}", skin)).left().row()
+            add(Label("Health: ${fighter.healthMax * fighter.healthPercentage}", skin)).left().row()
+            add(Label("Speed: ${fighter.speed}", skin)).left().row()
+            add(Label("Coordinates: (${fighter.x.toInt()}, ${fighter.y.toInt()})", skin)).left().row()
+            add(Label("Skills: ${fighter.skills.joinToString(separator = ", ") { it.skillTag }}", skin)).left().row()
+            add().height(6f).row()
+            add(Label("Current Instruction: ${fighter.getCurrentInstructions()?.let { it::class.simpleName } ?: "None"}", skin)).left().row()
+            add(Label("Instructions Left: ${fighter.instrSize}", skin)).left().row()
+            add().height(6f).row()
+            add(Label("Weapon: ${fighter.weapon::class.simpleName}", skin)).left().row()
+            add(Label("Capacity: ${fighter.weapon.capacityCurrent}/${fighter.weapon.capacity}", skin)).left().row()
+        }
         table.add(statusTable).expandX().fillX().row()
     }
 

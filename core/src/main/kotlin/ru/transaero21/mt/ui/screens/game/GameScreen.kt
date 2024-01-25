@@ -6,18 +6,20 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import ktx.actors.stage
-import ktx.scene2d.actors
+import ktx.scene2d.*
 import ktx.scene2d.label
+import ktx.scene2d.table
 import ktx.scene2d.textButton
 import ru.transaero21.mt.models.core.GameInfo
 import ru.transaero21.mt.models.core.Headquarter
 import ru.transaero21.mt.models.core.Team
 import ru.transaero21.mt.models.core.WorldSize
-import ru.transaero21.mt.models.core.orders.Attack
+import ru.transaero21.mt.models.core.orders.Order
+import ru.transaero21.mt.models.units.fighters.Fighter
 import ru.transaero21.mt.network.Command
 import ru.transaero21.mt.network.NetworkManager
 import ru.transaero21.mt.ui.screens.game.WorldMap.Companion.TILE_LENGTH
@@ -56,7 +58,7 @@ class GameScreen(
     private val hudViewport = ScreenViewport(hudCamera)
     private val hud = stage(viewport = hudViewport, batch = batch)
 
-    private val button: TextButton
+    private val teamLabel: Label
     private val timerLabel: Label
     private val loadingLabel: Label
     private val staffWindow = StaffWindow(staffMap = getSelfHeadquarter().commander.staff)
@@ -66,7 +68,7 @@ class GameScreen(
         commanderSelectedListener = {
             NetworkManager.sendCommandHost(
                 command = Command.SuggestOrder(
-                    order = Attack(x = selected!!.first, y = selected!!.second, fcId = it),
+                    order = preOrder?.apply { fcId = it }!!,
                     isLeft = NetworkManager.isHost
                 )
             )
@@ -74,18 +76,30 @@ class GameScreen(
     )
 
     private var selected: Pair<Float, Float>? = null
+    private var preOrder: Order? = null
+
+    private val withoutBuildingBlocks: Table
 
     init {
         initInputProcessor()
 
         hud.actors {
-            button = textButton(text = "Move") {
-                onClick {
-                    formationWindows.isVisible = true
-                    isVisible = false
+            withoutBuildingBlocks = table {
+                Order::class.sealedSubclasses.forEach { clazz ->
+                    textButton(text = clazz.simpleName!!) { cell ->
+                        cell.colspan(1).row()
+                        onClick {
+                            this@table.isVisible = false
+                            formationWindows.isVisible = true
+                            preOrder = clazz.constructors.first { it.parameters.isNotEmpty() }
+                                .call(selected!!.first, selected!!.second, 0)
+                        }
+                    }
                 }
                 isVisible = false
+                pack()
             }
+            teamLabel = label(text = "Your team: ${team.alias}")
             timerLabel = label(text = getTimerText())
             loadingLabel = label(text = "Game is loading, please wait")
         }
@@ -124,6 +138,7 @@ class GameScreen(
         worldMapCamera.handleResize(mapWidth = mapWidth, mapLength = mapLength)
         hudViewport.update(width, height, true)
         timerLabel.apply { setPosition((hud.width - this.width) / 2, hud.height - this.height) }
+        teamLabel.apply { setPosition(4f, hud.height - this.height) }
         loadingLabel.apply { setPosition((hud.width - this.width) / 2, (hud.height - this.height) / 2) }
         staffWindow.setPosition(0f, 0f)
         fighterWindow.apply { setPosition(hud.width - this.width, hud.height - this.height) }
@@ -137,6 +152,7 @@ class GameScreen(
 
     private fun renderWorld(delta: Float) {
         FrameHelper.update(delta = delta, gameInfo = gameInfo)
+        batch.setProjectionMatrix(worldMapCamera.combined)
         worldMap.render(delta = delta, batch = batch)
         timerLabel.setText(getTimerText())
         staffWindow.render()
@@ -182,18 +198,20 @@ class GameScreen(
 
                     when (button) {
                         Input.Buttons.LEFT -> {
-                            worldMap.selfSprites.forEach {
-                                val fighter = it.value.fighter
-                                val (dx, dy) = worldPos.x - (fighter.x - fighter.uniform.width / 2) to worldPos.y - fighter.y
-                                if (dx in 0f .. fighter.uniform.width && dy in 0f .. fighter.uniform.length) {
-                                    fighterWindow.fighter = fighter
+                            worldMap.selfSprites.forEach { (_, fc) ->
+                                if (isFighterClicked(click = worldPos, fighter = fc.first.fighter)) {
                                     return true
+                                }
+                                fc.second.forEach { (_, f) ->
+                                    if (isFighterClicked(click = worldPos, fighter = f.fighter))  {
+                                        return true
+                                    }
                                 }
                             }
                         }
                         Input.Buttons.RIGHT -> {
                             if (worldPos.x in 0f..mapWidth && worldPos.y in 0f..mapLength) {
-                                this@GameScreen.button.apply {
+                                this@GameScreen.withoutBuildingBlocks.apply {
                                     setPosition(hudPos.x, hudPos.y)
                                     selected = worldPos.x to worldPos.y
                                     isVisible = true
@@ -211,8 +229,17 @@ class GameScreen(
         }
     }
 
+    private fun isFighterClicked(click: Vector3, fighter: Fighter): Boolean {
+        val (dx, dy) = click.x - (fighter.x - fighter.uniform.width / 2) to click.y - (fighter.y - fighter.uniform.length / 2)
+        if (dx in 0f .. fighter.uniform.width && dy in 0f .. fighter.uniform.length) {
+            fighterWindow.fighter = fighter
+            return true
+        }
+        return false
+    }
+
     private fun hideButtons() {
-        this@GameScreen.button.isVisible = false
+        this@GameScreen.withoutBuildingBlocks.isVisible = false
     }
 
     private fun getTimerText(): String {

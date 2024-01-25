@@ -5,6 +5,6 @@ class BasicMine(
 ) : Mine(x = x, y = y, angle = angle, velocity = velocity) {
     override val hitRange: Float = 8F
     override val defuseTime: Float = 2F
-    override val distanceMax: Float = 100F
+    override val distanceMax: Float = 54F
     override val damage: Float = 15F
 }

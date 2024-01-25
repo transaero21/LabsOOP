@@ -7,8 +7,9 @@ import ru.transaero21.mt.models.units.fighters.Fighter
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class DefaultDefusing(private val defusingRange: Float) : Defusing() {
+class DefaultDefusing(defusingRange: Float) : Defusing() {
     override val timeout: Float = DEFUSING_TIMEOUT
+    override val range: Float = defusingRange
 
     override fun useSkill(delta: Float, self: Fighter, fWrapper: FighterWrapper): Boolean {
         if (!update(delta = delta)) return false
@@ -21,7 +22,7 @@ class DefaultDefusing(private val defusingRange: Float) : Defusing() {
             val ammo = aIterator.next().value
             if (ammo !is Mine) continue
             val distance = sqrt(x = (self.x - ammo.x).pow(n = 2) + (self.y - ammo.y).pow(n = 2))
-            if (distance <= defusingRange && (distanceMin == null || distance < distanceMin)) {
+            if (distance <= range && (distanceMin == null || distance < distanceMin)) {
                 distanceMin = distance
                 nearest = ammo
             }

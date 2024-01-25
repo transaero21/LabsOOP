@@ -5,8 +5,9 @@ import ru.transaero21.mt.models.units.fighters.Fighter
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-class DefaultHealing(private val healingRate: Float, private val healingRange: Float) : Healing() {
+class DefaultHealing(private val healingRate: Float, healingRange: Float) : Healing() {
     override val timeout: Float = HEALING_TIMEOUT
+    override val range: Float = healingRange
 
     override fun useSkill(delta: Float, self: Fighter, fWrapper: FighterWrapper): Boolean {
         if (!update(delta = delta)) return false
@@ -18,7 +19,7 @@ class DefaultHealing(private val healingRate: Float, private val healingRange: F
         while (fIterator.hasNext()) {
             val fighter = fIterator.next().value
             val distance = sqrt(x = (self.x - fighter.x).pow(n = 2) + (self.y - fighter.y).pow(n = 2))
-            if (distance <= healingRange && (lessHp == null || fighter.healthPercentage < lessHp)) {
+            if (distance <= range && (lessHp == null || fighter.healthPercentage < lessHp)) {
                 lessHp = distance
                 nearest = fighter
             }

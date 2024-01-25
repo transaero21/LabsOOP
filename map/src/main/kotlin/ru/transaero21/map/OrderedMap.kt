@@ -53,14 +53,13 @@ class OrderedMap<K : Comparable<K>, V>: MutableMap<K, V> {
      */
     override fun remove(key: K): V? {
         val i = searchForIndex(key = key)
-        val old = if (i < 0) null else _entries[i].value
-        if (i >= 0) {
-            for (j in i until _size - 1) {
-                _entries[j] = _entries[j + 1]
-            }
+        return if (i >= 0) {
+            val oldValue = _entries.removeAt(i).value
             _size--
+            oldValue
+        } else {
+            null
         }
-        return old
     }
 
     /**

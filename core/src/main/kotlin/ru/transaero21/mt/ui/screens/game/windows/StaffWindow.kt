@@ -35,15 +35,16 @@ class StaffWindow(
         for ((_, staff) in staffMap) {
             addStaffStatus(staff)
         }
+        staffTable.left()
         pack()
-        width = 200f
+        width = 172f
     }
 
     private fun addStaffStatus(staff: Staff) {
         val nameLabel = Label(staff.fullName, skin)
         val completionLabel = Label("Completion: ${staff.current}/${staff.orders.size}", skin)
         val efficiencyLabel = Label("Efficiency: ${staff.efficiency * 100}%", skin)
-        val timeLeftLabel = Label("Time Left: ${staff.approximateRemainingTime}", skin)
+        val timeLeftLabel = Label("Time Left: ${String.format("%.1f", staff.approximateRemainingTime)} s.", skin)
 
         val statusTable = Table(skin)
         statusTable.add(nameLabel).left().row()

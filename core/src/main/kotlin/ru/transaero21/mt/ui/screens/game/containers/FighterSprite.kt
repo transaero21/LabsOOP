@@ -1,14 +1,12 @@
 package ru.transaero21.mt.ui.screens.game.containers
 
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import ru.transaero21.mt.models.core.Team
 import ru.transaero21.mt.models.core.instructions.Move
 import ru.transaero21.mt.models.units.fighters.Fighter
+import ru.transaero21.mt.utils.toTexture
 import java.util.*
 import kotlin.math.PI
 
@@ -35,14 +33,15 @@ class FighterSprite(val fighter: Fighter, team: Team) : Sprite() {
     fun update(delta: Float, batch: SpriteBatch) {
         val direction = getDirection()
 
-        if (!fighter.hasUnfulfilledInstructions() || fighter.getCurrentInstructions() !is Move) {
+        val instruction = fighter.getCurrentInstructions()
+        if (instruction == null || instruction !is Move) {
             setRegion(fighterFrames[direction][0])
             resetAnimation()
         } else {
             setRegion(fighterFrames[direction][getCurrentFrame(delta = delta)])
         }
 
-        setPosition(fighter.x - fighter.uniform.width / 2, fighter.y)
+        setPosition(fighter.x - fighter.uniform.width / 2, fighter.y - fighter.uniform.length / 2)
         draw(batch)
     }
 
@@ -81,22 +80,6 @@ class FighterSprite(val fighter: Fighter, team: Team) : Sprite() {
             }
         }
         return currentFrame
-    }
-
-    private fun TextureRegion.toTexture(): Texture {
-        val pixmap = Pixmap(regionWidth, regionHeight, Pixmap.Format.RGBA8888)
-
-        if (texture.textureData.isPrepared.not()) texture.textureData.prepare()
-        val texturePixmap = texture.textureData.consumePixmap()
-
-        pixmap.drawPixmap(texturePixmap, 0, 0, regionX, regionY, regionWidth, regionHeight)
-
-        val newTexture = Texture(pixmap)
-
-        texturePixmap.dispose()
-        pixmap.dispose()
-
-        return newTexture
     }
 
     companion object {

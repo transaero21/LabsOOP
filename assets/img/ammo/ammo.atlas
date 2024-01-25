@@ -1,0 +1,13 @@
+ammo.png
+size:64,16
+repeat:none
+bullet-big
+bounds:42,2,8,8
+bullet-medium
+bounds:2,2,8,8
+bullet-small
+bounds:12,2,8,8
+mine-blue
+bounds:22,2,8,8
+mine-green
+bounds:32,2,8,8
