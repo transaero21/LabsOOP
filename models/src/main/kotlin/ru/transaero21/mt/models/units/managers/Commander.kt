@@ -17,7 +17,7 @@ import ru.transaero21.mt.models.units.fighters.FieldCommander
  * @property fullName full name of the commander.
  * @property rank rank of the commander.
  */
-class Commander(
+open class Commander(
     override val fullName: String,
     override val rank: Rank
 ) : CombatUnit() {

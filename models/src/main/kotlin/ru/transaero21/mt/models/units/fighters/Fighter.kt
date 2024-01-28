@@ -119,7 +119,7 @@ abstract class Fighter(
     @Synchronized fun applyHit(damage: Float): Boolean {
         if (damage > 0)
             healthPercentage = (healthMax * healthPercentage - damage) / healthMax
-        return healthPercentage > 0
+        return healthPercentage >= 0
     }
 
     /**
@@ -132,7 +132,8 @@ abstract class Fighter(
     @Synchronized fun applyHealing(healing: Float): Boolean {
         if (healing > 0)
             healthPercentage = (healthMax * healthPercentage + healing) / healthMax
-        return healthPercentage > 0
+        if (healthPercentage > 1f) healthPercentage = 1f
+        return healthPercentage >= 0
     }
 
     /**
@@ -149,7 +150,7 @@ abstract class Fighter(
      *
      * @return true if there are unfulfilled instructions, false otherwise.
      */
-    private fun hasUnfulfilledInstructions(): Boolean {
+    fun hasUnfulfilledInstructions(): Boolean {
         return current < instructions.size
     }
 
@@ -162,6 +163,9 @@ abstract class Fighter(
         return if (hasUnfulfilledInstructions()) instructions[current] else null
     }
 
+    /**
+     * Abort all instructions fighter currently have.
+     */
     fun abortInstructions() {
         current = instructions.size
     }

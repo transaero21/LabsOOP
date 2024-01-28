@@ -1,44 +1,47 @@
-package ru.transaero21.mt.ui.screens.game.helpers
+package ru.transaero21.mt.models.core
 
-import ru.transaero21.mt.models.core.GameInfo
-import ru.transaero21.mt.models.core.Headquarter
+import org.junit.jupiter.api.Test
+import ru.transaero21.mt.models.ammo.bullet.BulletImpl
 import ru.transaero21.mt.models.core.orders.Move
-import ru.transaero21.mt.models.units.fighters.*
+import ru.transaero21.mt.models.core.orders.Order
+import ru.transaero21.mt.models.units.Rank
+import ru.transaero21.mt.models.units.fighter.FighterTest
+import ru.transaero21.mt.models.units.fighters.FieldCommander
 import ru.transaero21.mt.models.units.fighters.FieldCommander.Companion.makeCommander
+import ru.transaero21.mt.models.units.fighters.Fighter
+import ru.transaero21.mt.models.units.fighters.Formation
 import ru.transaero21.mt.models.units.managers.Commander
-import ru.transaero21.mt.models.units.managers.CommonStaff
-import ru.transaero21.mt.ui.screens.game.WorldMap
-import ru.transaero21.mt.utils.RandomizerUtils
+import ru.transaero21.mt.models.units.staff.StaffImpl
 
-object GameHelper {
-    private const val STAFF_COUNT = 2
-    private const val DEFAULT_TIME = 300f
-    private const val DEFAULT_RADIUS = 16f
+class GameInfoTest {
+    private val staffCount = 2
+    private val defaultTime = 300f
+    private val defaultRadius = 16f
     private var mapWidth: Float = 0f
     private var mapLength: Float = 0f
 
     private data class Initializer(val x: Float, val y: Float, val count: Int, val createFighter: (Float, Float) -> Fighter)
     private val initializerList = listOf(
-        Initializer(x = 24f, y = 24f, count = 3, createFighter = { x, y -> Doctor(initX = x, initY = y) }),
-        Initializer(x = 82f, y = 48f, count = 3, createFighter = { x, y -> Grenadier(initX = x, initY = y) }),
-        Initializer(x = 48f, y = 82f, count = 3, createFighter = { x, y -> Infantry(initX = x, initY = y) }),
-        Initializer(x = 148f, y = 48f, count = 3, createFighter = { x, y -> Sapper(initX = x, initY = y) }),
-        Initializer(x = 48f, y = 148f, count = 3, createFighter = { x, y -> Sapper(initX = x, initY = y) })
+        Initializer(x = 24f, y = 24f, count = 3, createFighter = { x, y -> FighterTest.ConcreteFighter(x = x, y = y) }),
+        Initializer(x = 82f, y = 48f, count = 3, createFighter = { x, y -> FighterTest.ConcreteFighter(x = x, y = y) }),
+        Initializer(x = 48f, y = 82f, count = 3, createFighter = { x, y -> FighterTest.ConcreteFighter(x = x, y = y) }),
+        Initializer(x = 148f, y = 48f, count = 3, createFighter = { x, y -> FighterTest.ConcreteFighter(x = x, y = y) }),
+        Initializer(x = 48f, y = 148f, count = 3, createFighter = { x, y -> FighterTest.ConcreteFighter(x = x, y = y) })
     )
 
-    fun getNewGame(mapWidth: Float, mapLength: Float, timestamp: Long): GameInfo {
-        RandomizerUtils.setupNewGame(timestamp = timestamp)
-        this@GameHelper.mapWidth = mapWidth
-        this@GameHelper.mapLength = mapLength
+    private fun getNewGame(mapWidth: Float, mapLength: Float): GameInfo {
+        this@GameInfoTest.mapWidth = mapWidth
+        this@GameInfoTest.mapLength = mapLength
 
         var id = 0
         val nextId = { id++ }
 
         val gameInfo = GameInfo(
             headquarters = getHeadquarter(isLeft = true) to getHeadquarter(isLeft = false),
-            timeMax = DEFAULT_TIME, mapWidth = mapWidth, mapLength = mapLength
+            timeMax = defaultTime, mapWidth = mapWidth, mapLength = mapLength
         )
 
+        gameInfo.headquarters.first.ammunition[0] = BulletImpl(0f, 0f, 0f, 0f)
         initializerList.forEach { init ->
             repeat(2) {
                 val isLeft = it % 2 == 1
@@ -48,7 +51,7 @@ object GameHelper {
             }
         }
 
-        repeat(times = STAFF_COUNT * 2) {
+        repeat(times = staffCount * 2) {
             val hq = if (it % 2 == 0) gameInfo.headquarters.first else gameInfo.headquarters.second
             getNextStaff(hq = hq, nextId = nextId)
         }
@@ -58,24 +61,21 @@ object GameHelper {
 
     private fun getHeadquarter(isLeft: Boolean): Headquarter {
         return Headquarter(
-            x = if (isLeft) 0f else WorldMap.TILE_WIDTH * mapWidth,
-            y = if (isLeft) 0f else WorldMap.TILE_LENGTH * mapLength,
+            x = if (isLeft) 0f else mapWidth,
+            y = if (isLeft) 0f else mapLength,
             commander = Commander(
-                fullName = RandomizerUtils.getNextName(),
-                rank = RandomizerUtils.getNextRank()
+                fullName = "Default Name",
+                rank = Rank("Default", 0f)
             )
         )
     }
 
     private fun getNextStaff(hq: Headquarter, nextId: () -> Int) {
-        hq.commander.staff[nextId()] = CommonStaff(
-            rank = RandomizerUtils.getNextRank(),
-            fullName = RandomizerUtils.getNextName()
-        )
+        hq.commander.staff[nextId()] = StaffImpl()
     }
 
     private fun createFormation(initializer: Initializer, nextId: () -> Int): FieldCommander {
-        val formation = Formation(DEFAULT_RADIUS)
+        val formation = Formation(defaultRadius)
         repeat(initializer.count) {
             formation.fighters[nextId()] = initializer.createFighter(initializer.x, initializer.y)
         }
@@ -90,4 +90,10 @@ object GameHelper {
         y = if (isLeft) this.y else mapWidth - this.y,
         count = this.count, createFighter = this.createFighter
     )
+
+    @Test
+    fun testLaunchGame() {
+        val gameInfo = getNewGame(1024f, 1024f)
+        gameInfo.update(10f, emptyList<Order>() to emptyList<Order>())
+    }
 }

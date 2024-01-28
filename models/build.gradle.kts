@@ -15,6 +15,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines)
     implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.kotlin.test)
+    testImplementation(libs.mockito.kotlin)
 }
 
 tasks.test {

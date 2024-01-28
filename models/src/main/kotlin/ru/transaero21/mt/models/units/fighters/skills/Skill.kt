@@ -8,13 +8,11 @@ abstract class Skill: Comparable<Skill> {
     abstract val range: Float
     abstract val timeout: Float
 
-    private var timePassed: Float = 0F
+    private var timePassed: Float = 0f
 
     fun update(delta: Float): Boolean {
         timePassed += delta
-        return (timePassed >= timeout).also {
-            if (!it) timePassed -= timeout
-        }
+        return (timePassed >= timeout).also { if (it) timePassed -= timeout }
     }
 
     abstract fun useSkill(delta: Float, self: Fighter, fWrapper: FighterWrapper): Boolean

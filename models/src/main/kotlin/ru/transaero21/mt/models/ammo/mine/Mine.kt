@@ -7,9 +7,9 @@ abstract class Mine(
 ) : Ammunition(x = x, y = y, angle = angle, velocity = velocity) {
     abstract val hitRange: Float
     abstract val defuseTime: Float
-    private var timePassed: Float = 0F
+    private var timePassed: Float = 0f
 
-    var state: MineState = MineState.Transit
+    @Volatile var state: MineState = MineState.Transit
 
     fun defuse(deltaTime: Float): Boolean {
         if (state != MineState.Ready) return false

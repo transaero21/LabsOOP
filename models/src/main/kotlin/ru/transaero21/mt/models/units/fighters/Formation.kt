@@ -11,7 +11,7 @@ import kotlin.math.sin
  *
  * @property approachRadius radius within which individual fighters approach the field commander.
  */
-class Formation(private val approachRadius: Float) {
+open class Formation(private val approachRadius: Float) {
     /**
      * A collection of fighters organized in the formation, mapped by their unique identifiers.
      */

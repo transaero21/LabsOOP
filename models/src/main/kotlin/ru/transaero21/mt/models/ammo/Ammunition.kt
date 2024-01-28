@@ -28,7 +28,7 @@ abstract class Ammunition(
     /**
      * Current distance traveled by the ammunition.
      */
-    var distanceCurrent: Float = 0F
+    var distanceCurrent: Float = 0f
         private set
 
     /**

@@ -18,7 +18,7 @@ abstract class FieldCommander(var formation: Formation, initX: Float, initY: Flo
     /**
      * List of incoming orders for the field commander.
      */
-    private val incomingOrders: MutableList<Order> = mutableListOf()
+    val incomingOrders: MutableList<Order> = mutableListOf()
 
     /**
      * Updates the field commander, handles incoming orders, and updates the formation.

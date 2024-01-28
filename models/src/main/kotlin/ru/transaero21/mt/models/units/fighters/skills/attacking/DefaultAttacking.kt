@@ -6,11 +6,11 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 class DefaultAttacking(attackingRange: Float) : Attacking() {
-    override val timeout: Float = 0F
+    override val timeout: Float = 0f
     override val range: Float = attackingRange
 
     override fun useSkill(delta: Float, self: Fighter, fWrapper: FighterWrapper): Boolean {
-        if (!update(delta = delta)) return false
+        if (!update(delta = delta)) return true
 
         var nearest: Fighter? = null
         var leastDistance: Float? = null

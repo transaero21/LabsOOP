@@ -1,5 +1,8 @@
 package ru.transaero21.mt.models.core
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import ru.transaero21.map.OrderedMap
 import ru.transaero21.mt.models.ammo.Ammunition
 import ru.transaero21.mt.models.ammo.bullet.Bullet
@@ -21,7 +24,7 @@ import ru.transaero21.mt.models.units.managers.Commander
  * @property y y-coordinate of the headquarters.
  * @property commander commander in charge of managing staff and field commanders.
  */
-class Headquarter(val x: Float, val y: Float, val commander: Commander) {
+open class Headquarter(val x: Float, val y: Float, val commander: Commander) {
     /**
      * collection of ammunition managed by the headquarters, mapped by their unique identifiers.
      */
@@ -120,23 +123,32 @@ class Headquarter(val x: Float, val y: Float, val commander: Commander) {
      * Cleans up fighters with zero or negative health percentages from both the fighters and field commanders.
      */
     fun makeClean() {
-        commander.fieldCommanders.forEach { (fcId, fc) ->
-            if (fc.healthPercentage <= 0f) {
-                commander.fieldCommanders.remove(key = fcId)
-            }
-            fc.formation.fighters.forEach { (fId, f) ->
-                if (f.healthPercentage <= 0F) {
-                    fc.formation.fighters.remove(key = fId)
+        runBlocking {
+            val deferredList = commander.fieldCommanders.map { (fcId, fc) ->
+                async {
+                    if (fc.healthPercentage <= 0f) {
+                        commander.fieldCommanders.remove(key = fcId)
+                    }
+                    fc.formation.fighters.forEach { (fId, f) ->
+                        if (f.healthPercentage <= 0F) {
+                            fc.formation.fighters.remove(key = fId)
+                        }
+                    }
                 }
             }
-        }
-        ammunition.keys.filter {
-            when (val ammo = ammunition[it]) {
-                is Bullet -> ammo.state == BulletState.Dispose
-                is Mine -> ammo.state == MineState.Defused || ammo.state == MineState.Exploded
-                else -> false
+            val deferredAmmo = async {
+                ammunition.keys.filter {
+                    when (val ammo = ammunition[it]) {
+                        is Bullet -> ammo.state == BulletState.Dispose
+                        is Mine -> ammo.state == MineState.Defused || ammo.state == MineState.Exploded
+                        else -> false
+                    }
+                }.forEach { k -> ammunition.remove(k) }
             }
-        }.forEach { k -> ammunition.remove(k) }
+
+            deferredList.awaitAll()
+            deferredAmmo.await()
+        }
     }
 
     /**

@@ -10,7 +10,7 @@ import ru.transaero21.mt.models.core.iterators.FighterIterator
  * @property iterator wrapper for iterators providing access to fighters and ammunition.
  * @property populateAmmo function to populate ammunition in the combat scenario.
  */
-data class FighterWrapper(
+open class FighterWrapper(
     val iterator: IteratorWrapper,
     val populateAmmo: (Ammunition) -> Unit
 )
@@ -23,7 +23,7 @@ data class FighterWrapper(
  * @property eaIterator function to retrieve an enemy ammunition iterator.
  * @property saIterator function to retrieve a self ammunition iterator.
  */
-data class IteratorWrapper(
+open class IteratorWrapper(
     val efIterator: () -> FighterIterator,
     val sfIterator: () -> FighterIterator,
     val eaIterator: () -> AmmoIterator,

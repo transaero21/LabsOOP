@@ -7,7 +7,7 @@ abstract class Bullet(
 ) : Ammunition(x = x, y = y, angle = angle, velocity = velocity) {
     var isHitEnd: Boolean = false
         private set(value) { if (!field) field = value }
-    var state: BulletState = if (velocity != 0F) BulletState.Transit else BulletState.Dispose
+    @Volatile var state: BulletState = if (velocity != 0F) BulletState.Transit else BulletState.Dispose
 
     override fun update(delta: Float) {
         super.update(delta)

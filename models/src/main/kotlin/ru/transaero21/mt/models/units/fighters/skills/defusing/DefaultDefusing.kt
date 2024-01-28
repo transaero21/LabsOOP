@@ -12,7 +12,7 @@ class DefaultDefusing(defusingRange: Float) : Defusing() {
     override val range: Float = defusingRange
 
     override fun useSkill(delta: Float, self: Fighter, fWrapper: FighterWrapper): Boolean {
-        if (!update(delta = delta)) return false
+        if (!update(delta = delta)) return true
 
         var nearest: Ammunition? = null
         var distanceMin: Float? = null

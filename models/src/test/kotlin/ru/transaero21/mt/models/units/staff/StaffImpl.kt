@@ -3,7 +3,7 @@ package ru.transaero21.mt.models.units.staff
 import ru.transaero21.mt.models.units.Rank
 import ru.transaero21.mt.models.units.managers.Staff
 
-class StaffImpl(fullName: String = "StaffImpl") : Staff(fullName) {
+open class StaffImpl(fullName: String = "StaffImpl") : Staff(fullName) {
     override val rank: Rank = staffRank
     override val defaultProcessingTime: Float = DEFAULT_PROCESSING_TIME
     override val maxEfficiencyBonus: Float = MAXIMUM_EFFICIENCY_BONUS

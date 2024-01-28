@@ -14,7 +14,7 @@ class Doctor(
     initX: Float, initY: Float
 ) : Fighter(x = initX, y = initY) {
     override val healthMax: Float = 120F
-    override val skills: Set<Skill> = setOf(DefaultAttacking(attackingRange = 128f), DefaultHealing(healingRange = 16f, healingRate = 10f))
+    override val skills: Set<Skill> = setOf(DefaultAttacking(attackingRange = 128f), DefaultHealing(healingRange = 32f, healingRate = 10f))
     override val weapon: Weapon = Pistol()
     override val speed: Float = 24F
     override val uniform: Uniform = Uniform(width = 16F, length = 16F)
