@@ -1,0 +1,29 @@
+[versions]
+kotlin = "1.9.20"
+kotlin-coroutines = "1.7.3"
+kotlin-serialization = "1.6.2"
+mockito-kotlin = "3.2.0"
+gdx = "1.12.1"
+gdx-ktx = "1.12.1-rc1"
+
+[libraries]
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito-kotlin" }
+gdx-core = { group = "com.badlogicgames.gdx", name = "gdx", version.ref = "gdx" }
+gdx-platform = { group = "com.badlogicgames.gdx", name = "gdx-platform", version.ref = "gdx" }
+gdx-backend-lwjgl3 = { group = "com.badlogicgames.gdx", name = "gdx-backend-lwjgl3", version.ref = "gdx" }
+gdx-backend-android = { group = "com.badlogicgames.gdx", name = "gdx-backend-android", version.ref = "gdx" }
+gdx-ktx-actors = { group = "io.github.libktx", name = "ktx-actors", version.ref = "gdx-ktx" }
+gdx-ktx-async = { group = "io.github.libktx", name = "ktx-async", version.ref = "gdx-ktx" }
+gdx-ktx-scene2d = { group = "io.github.libktx", name = "ktx-scene2d", version.ref = "gdx-ktx" }
+
+# Dependencies of the included build-logic
+kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
